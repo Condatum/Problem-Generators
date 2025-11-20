@@ -1,12 +1,4 @@
-
-
-▒█▀▀▄ ▒█▀▀▄ ▒█▀▀▀█ ▄ 　 ▒█▀▀▄ ░▀░ █▀▀▀ ░▀░ ▀▀█▀▀ █▀▀█ █░░ 　 ▒█▀▀▄ █▀▀█ █▀▀ █▀▀ █▀▀ ░▀░ █▀▀▄ █▀▀▀ 
-▒█░▒█ ▒█░▒█ ░▀▀▀▄▄ ░ 　 ▒█░▒█ ▀█▀ █░▀█ ▀█▀ ░░█░░ █▄▄█ █░░ 　 ▒█░▒█ █▄▄▀ █▀▀ ▀▀█ ▀▀█ ▀█▀ █░░█ █░▀█ 
-▒█▄▄▀ ▒█▄▄▀ ▒█▄▄▄█ ▀ 　 ▒█▄▄▀ ▀▀▀ ▀▀▀▀ ▀▀▀ ░░▀░░ ▀░░▀ ▀▀▀ 　 ▒█▄▄▀ ▀░▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀░░▀ ▀▀▀▀ 
-
-▒█▀▀▀█ █░░█ █▀▀ ▀▀█▀▀ █▀▀ █▀▄▀█ 
-░▀▀▀▄▄ █▄▄█ ▀▀█ ░░█░░ █▀▀ █░▀░█ 
-▒█▄▄▄█ ▄▄▄█ ▀▀▀ ░░▀░░ ▀▀▀ ▀░░░▀
+<img width="862" height="272" alt="Image" src="https://github.com/user-attachments/assets/a03e68c1-ffce-4d5d-b0ac-2905529e0d45" />
 
 The Digital Wardrobe is an interactive clothing system  capable of real time data management,
 designed to help users store, organize, and assemble outfits using a structured, category-based approach.
