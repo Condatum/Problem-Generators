@@ -18,4 +18,4 @@ To support both uniform behavior and future scalability, the application utilize
 
 A dedicated Wardrobe Manager oversees item storage and category filtering, ensuring smooth management of the user’s collection. Complementing this is the Outfit Builder, which enables users to assemble complete looks by selecting one item from each category.
 
-The GUI interface—built with Java Swing—provides intuitive interaction through item dialogs, visual previews, and robust file persistence, allowing wardrobe data to be saved and reloaded across sessions. These currently implemented features form the foundation of a more advanced wardrobe management system that will continue to expand as development progresses.
+The GUI interface, built with Java Swing, provides intuitive interaction through item dialogs, visual previews, and robust file persistence, allowing wardrobe data to be saved and reloaded across sessions. These currently implemented features form the foundation of a more advanced wardrobe management system that will continue to expand as development progresses.
