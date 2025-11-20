@@ -3,7 +3,7 @@
 𝘕𝘰𝘵𝘦: 𝘛𝘩𝘪𝘴 𝘱𝘳𝘰𝘫𝘦𝘤𝘵 𝘪𝘴 𝘴𝘵𝘪𝘭𝘭 𝘪𝘯 𝘥𝘦𝘷𝘦𝘭𝘰𝘱𝘮𝘦𝘯𝘵.
 𝘔𝘰𝘳𝘦 𝘧𝘦𝘢𝘵𝘶𝘳𝘦𝘴 𝘢𝘯𝘥 𝘪𝘮𝘱𝘳𝘰𝘷𝘦𝘮𝘦𝘯𝘵𝘴 𝘸𝘪𝘭𝘭 𝘤𝘰𝘯𝘵𝘪𝘯𝘶𝘦 𝘵𝘰 𝘣𝘦 𝘢𝘥𝘥𝘦𝘥.
 
-The Digital Wardrobe is an interactive clothing system  capable of real time data management,
+𝐃𝐚𝐨𝐦𝐢𝐧𝐠𝐟𝐢𝐭 is an interactive clothing system  capable of real time data management,
 designed to help users store, organize, and assemble outfits using a structured, category-based approach.
 At its core, the application manages garments in real time, allowing users to add, remove, browse, and combine clothing items with ease.
 
