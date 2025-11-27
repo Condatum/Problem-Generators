@@ -1,2 +1,5 @@
-package PACKAGE_NAME;public enum Category {
+public enum Category {
+    TOP,
+    BOTTOM,
+    FOOTWEAR
 }
