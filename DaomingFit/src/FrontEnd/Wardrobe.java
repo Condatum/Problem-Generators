@@ -1,4 +1,4 @@
-package TestFolder;
+package FrontEnd;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -7,33 +7,29 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
+import java.util.Objects;
 
-public class Collection extends JFrame {
+public class Wardrobe extends JFrame {
     private JPanel wardrobePanel;
     private JPanel titlePanel;
     private JButton xButton;
     private JLabel icon;
     private JPanel contentPanel;
     private JPanel clothesPanel;
-    private JComboBox CategoriesDropDown;
-    private JLabel TitleText;
     private JButton rightButton;
     private JButton leftButton;
     private JLabel clotheLabel;
-    private Font PixelSans;
+
     // temporary way of loading shirt. change it once other classes are connected to the gui
     // when adding shirt images, size must be 250 x 250
-    public Collection(){
+    private String[] shirts = {
+            "/clothing-images/shirt_1.jpg",
+            "/clothing-images/shirt_2.jpg"
+    };
+
+    public Wardrobe(){
         // border effect for buttons
         applyButtonBorder(xButton);
-        try {
-            PixelSans = Font.createFont(Font.TRUETYPE_FONT, new File("Pixelify_Sans/static/PixelifySans-Regular.ttf")).deriveFont(14f);
-        }catch(FontFormatException | IOException e){
-            System.out.println("Font not found...");
-        }
-        setAllFonts(); // Sets all fonts to PixelSans
 
         // border effect for panels
         Color gray = new Color(198, 198, 198);
@@ -50,6 +46,29 @@ public class Collection extends JFrame {
             }
         });
 
+        // for switching outfits --
+        rightButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ImageIcon icon = new ImageIcon(getClass().getResource(shirts[1]));
+                clotheLabel.setIcon(icon);
+                clotheLabel.revalidate();
+                clotheLabel.repaint();
+            }
+        });
+
+        leftButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ImageIcon icon = new ImageIcon(getClass().getResource(shirts[0]));
+                clotheLabel.setIcon(icon);
+                clotheLabel.revalidate();
+                clotheLabel.repaint();
+            }
+        });
+        // ----------
+
+        // do not edit
         add(wardrobePanel);
         setUndecorated(true);
         pack();
@@ -82,10 +101,7 @@ public class Collection extends JFrame {
         // Optional: Set the retro background color
         panel.setBackground(color);
     }
-    private void setAllFonts(){
-        CategoriesDropDown.setFont(PixelSans);
-        TitleText.setFont(PixelSans);
-    }
+
     private void applyButtonBorder(JButton button) {
         final int BORDER_WEIGHT = 3;
 
@@ -124,6 +140,6 @@ public class Collection extends JFrame {
         // Override the default border property for ALL JButtons
         UIManager.put("Button.border", customBorder);
 
-        SwingUtilities.invokeLater(() -> new Collection());
+        SwingUtilities.invokeLater(() -> new Wardrobe());
     }
 }

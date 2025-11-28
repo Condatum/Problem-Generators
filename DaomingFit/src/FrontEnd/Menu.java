@@ -1,4 +1,4 @@
-package TestFolder;
+package FrontEnd;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
