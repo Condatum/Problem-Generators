@@ -30,6 +30,7 @@
             <properties>
               <background color="-4144960"/>
               <font name="DialogInput" size="12" style="1"/>
+              <icon value="x.png"/>
               <preferredSize width="18" height="16"/>
               <selected value="false"/>
               <text value="X"/>
