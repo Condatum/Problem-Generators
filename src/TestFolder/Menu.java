@@ -97,7 +97,7 @@ public class Menu extends JFrame {
         );
 
         // Override the default border property for ALL JButtons
-        UIManager.put("Button.border", customBorder);
+         UIManager.put("Button.border", customBorder);
 
         // Then launch your GUI
         SwingUtilities.invokeLater(() -> new Menu());

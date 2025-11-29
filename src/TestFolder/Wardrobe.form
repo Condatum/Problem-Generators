@@ -22,15 +22,17 @@
         <children>
           <component id="d5714" class="javax.swing.JButton" binding="xButton" default-binding="true">
             <constraints>
-              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag top="0" left="1040" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
               <background color="-4144960"/>
-              <font name="DialogInput" size="11" style="1"/>
-              <preferredSize width="18" height="16"/>
+              <font name="DialogInput" size="12" style="1"/>
+              <icon value="TestFolder/images/x.png"/>
+              <minimumSize width="40" height="18"/>
+              <preferredSize width="20" height="18"/>
               <selected value="false"/>
-              <text value="X"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="54a26" class="javax.swing.JLabel">
@@ -57,6 +59,41 @@
           </component>
         </children>
       </grid>
+      <grid id="e186a" binding="tabsPanel" layout-manager="GridBagLayout">
+        <constraints/>
+        <properties>
+          <background color="-4144960"/>
+          <minimumSize width="750" height="17"/>
+          <preferredSize width="1270" height="16"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="29f66" class="javax.swing.JLabel" binding="wardrobeLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <font name="DialogInput" size="15" style="1"/>
+              <minimumSize width="80" height="22"/>
+              <preferredSize width="95" height="17"/>
+              <text value="Wardrobe"/>
+            </properties>
+          </component>
+          <component id="324b3" class="javax.swing.JLabel" binding="collectionLabel">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="1070" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <font name="DialogInput" size="15" style="1"/>
+              <minimumSize width="110" height="22"/>
+              <preferredSize width="120" height="17"/>
+              <text value="Collection"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
       <grid id="9329b" binding="contentPanel" layout-manager="GridBagLayout">
         <constraints/>
         <properties>
@@ -67,71 +104,287 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="ec2d0" class="javax.swing.JLabel">
+          <grid id="134dd" binding="createOutfitPanel" layout-manager="GridBagLayout">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="0" bottom="10" right="0" weightx="0.0" weighty="0.0"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="60" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <font name="DialogInput" size="36" style="1"/>
-              <horizontalAlignment value="0"/>
-              <minimumSize width="350" height="30"/>
-              <preferredSize width="350" height="30"/>
-              <text value="Create Outfit"/>
-            </properties>
-          </component>
-          <grid id="23bde" binding="clothesPanel" layout-manager="GridBagLayout">
-            <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <background color="-1"/>
-              <minimumSize width="450" height="570"/>
-              <preferredSize width="450" height="700"/>
+              <background color="-4144960"/>
+              <foreground color="-4144960"/>
+              <minimumSize width="500" height="620"/>
+              <preferredSize width="500" height="620"/>
             </properties>
             <border type="none"/>
             <children>
-              <component id="91c91" class="javax.swing.JLabel" binding="clotheLabel">
+              <grid id="23bde" binding="clothesPanel" layout-manager="GridBagLayout">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="1" row-span="5" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="1.0"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <minimumSize width="350" height="570"/>
+                  <preferredSize width="450" height="700"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="91c91" class="javax.swing.JLabel" binding="topLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag top="10" left="0" bottom="10" right="0" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <horizontalAlignment value="0"/>
+                      <icon value="TestFolder/images/Tops/shirt_1.jpg"/>
+                      <minimumSize width="300" height="200"/>
+                      <preferredSize width="175" height="175"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                  <component id="1b713" class="javax.swing.JLabel" binding="bottomLabel">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="0" left="0" bottom="10" right="0" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <icon value="TestFolder/images/Bottoms/pants_2.png"/>
+                      <minimumSize width="250" height="17"/>
+                      <preferredSize width="200" height="220"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                  <component id="81df7" class="javax.swing.JLabel" binding="shoesLabel">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <horizontalAlignment value="0"/>
+                      <icon value="TestFolder/images/Shoes/shoes_1.png"/>
+                      <preferredSize width="200" height="130"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="3ee13" class="javax.swing.JButton" binding="rightTopButton">
+                <constraints>
+                  <grid row="0" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="110" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <background color="-4144960"/>
+                  <icon value="TestFolder/images/arrow_right.png"/>
+                  <minimumSize width="65" height="65"/>
+                  <preferredSize width="60" height="70"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="f5c43" class="javax.swing.JButton" binding="rightBottomButton">
+                <constraints>
+                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="135" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <background color="-4144960"/>
+                  <icon value="TestFolder/images/arrow_right.png"/>
+                  <minimumSize width="65" height="65"/>
+                  <preferredSize width="60" height="70"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="622f1" class="javax.swing.JButton" binding="rightShoeButton">
+                <constraints>
+                  <grid row="3" column="2" row-span="3" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="85" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <background color="-4144960"/>
+                  <icon value="TestFolder/images/arrow_right.png"/>
+                  <minimumSize width="65" height="65"/>
+                  <preferredSize width="60" height="70"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="cef6e" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <icon value="TestFolder/images/shirt_1.jpg"/>
-                  <minimumSize width="300" height="200"/>
-                  <preferredSize width="250" height="250"/>
+                  <font name="DialogInput" size="32" style="1"/>
+                  <horizontalAlignment value="0"/>
+                  <minimumSize width="79" height="35"/>
+                  <preferredSize width="79" height="35"/>
+                  <text value="Outfit Display"/>
+                </properties>
+              </component>
+              <component id="3e734" class="javax.swing.JButton" binding="leftShoeButton">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="70" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <background color="-4144960"/>
+                  <icon value="TestFolder/images/arrow_icon.png"/>
+                  <minimumSize width="65" height="65"/>
+                  <preferredSize width="65" height="65"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="57d40" class="javax.swing.JButton" binding="leftTopButton">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="75" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <background color="-4144960"/>
+                  <icon value="TestFolder/images/arrow_icon.png"/>
+                  <minimumSize width="65" height="65"/>
+                  <preferredSize width="65" height="65"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="55a5e" class="javax.swing.JButton" binding="leftBottomButton">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="135" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <background color="-4144960"/>
+                  <icon value="TestFolder/images/arrow_icon.png"/>
+                  <minimumSize width="65" height="65"/>
+                  <preferredSize width="65" height="65"/>
                   <text value=""/>
                 </properties>
               </component>
             </children>
           </grid>
-          <component id="dbaa2" class="javax.swing.JButton" binding="rightButton">
+          <grid id="eb72c" binding="settingsPanel" layout-manager="GridBagLayout">
             <constraints>
-              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="60" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
               <background color="-4144960"/>
-              <icon value="TestFolder/images/arrow_right.png"/>
-              <minimumSize width="70" height="70"/>
-              <preferredSize width="70" height="70"/>
-              <text value=""/>
+              <minimumSize width="500" height="620"/>
+              <preferredSize width="500" height="620"/>
             </properties>
-          </component>
-          <component id="57d40" class="javax.swing.JButton" binding="leftButton">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="0" bottom="0" right="20" weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <background color="-4144960"/>
-              <icon value="TestFolder/images/arrow_icon.png"/>
-              <minimumSize width="70" height="70"/>
-              <preferredSize width="70" height="70"/>
-              <text value=""/>
-            </properties>
-          </component>
+            <border type="none"/>
+            <children>
+              <component id="ccac4" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="0" bottom="5" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font name="DialogInput" size="32" style="1"/>
+                  <horizontalAlignment value="0"/>
+                  <minimumSize width="79" height="25"/>
+                  <preferredSize width="400" height="35"/>
+                  <text value="Outfit Details"/>
+                </properties>
+              </component>
+              <scrollpane id="e9ecb" binding="outfitListPane">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="0" bottom="15" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <foreground color="-4144960"/>
+                  <minimumSize width="300" height="200"/>
+                  <preferredSize width="450" height="150"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="9b5e9" class="javax.swing.JList" binding="list1" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <background color="-1"/>
+                      <font name="DialogInput" size="23" style="1"/>
+                      <minimumSize width="250" height="200"/>
+                      <model>
+                        <item value="Outfit 1"/>
+                        <item value="Outfit 2"/>
+                        <item value="Outfit 3"/>
+                        <item value="Outfit 4"/>
+                        <item value="Outfit 5"/>
+                        <item value="Outfit 6"/>
+                        <item value="Outfit 7"/>
+                        <item value="Outfit 8"/>
+                        <item value="Outfit 9"/>
+                        <item value="Outfit 10"/>
+                      </model>
+                      <preferredSize width="400" height="400"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+              <component id="5b9e5" class="javax.swing.JButton" binding="loadOutfitButton" default-binding="true">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <background color="-4144960"/>
+                  <font name="DialogInput" size="23" style="1"/>
+                  <preferredSize width="210" height="45"/>
+                  <text value="Load Outfit"/>
+                </properties>
+              </component>
+              <component id="d977f" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="70" left="0" bottom="10" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font name="DialogInput" size="32" style="1"/>
+                  <horizontalAlignment value="0"/>
+                  <minimumSize width="79" height="25"/>
+                  <preferredSize width="400" height="35"/>
+                  <text value="Save New Outfit"/>
+                </properties>
+              </component>
+              <component id="96df" class="javax.swing.JTextField" binding="inputOutfitField">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                  <gridbag top="0" left="0" bottom="15" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="DialogInput" size="21" style="1"/>
+                  <preferredSize width="450" height="45"/>
+                </properties>
+              </component>
+              <component id="16d59" class="javax.swing.JButton" binding="removeOutfitButton">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="5" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <background color="-4144960"/>
+                  <font name="DialogInput" size="23" style="1"/>
+                  <preferredSize width="230" height="45"/>
+                  <text value="Remove Outfit"/>
+                </properties>
+              </component>
+              <component id="53aaa" class="javax.swing.JButton">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="5" bottom="30" right="5" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <background color="-4144960"/>
+                  <font name="DialogInput" size="23" style="1"/>
+                  <preferredSize width="450" height="45"/>
+                  <text value="Save Outfit"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
     </children>
