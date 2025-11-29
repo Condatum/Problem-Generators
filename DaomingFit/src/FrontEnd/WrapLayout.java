@@ -3,6 +3,13 @@ package FrontEnd;
 import java.awt.*;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+/*
+* Renz note:
+* Gi download koni sa github nga class
+* Para daw ni dynamic ang scroll pane sa collection panel sa Collection GUI
+* So yeah ay lang ni hilabti, para ni mo adapt ang scroll pane sa amount of clothes added
+*/
+
 
 /**
  *  FlowLayout subclass that fully supports wrapping of components.

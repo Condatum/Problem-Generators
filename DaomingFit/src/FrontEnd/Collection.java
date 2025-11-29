@@ -36,7 +36,7 @@ public class Collection extends JFrame {
         // --- Initializing the font --- //
 
         InitializeScrollableContainer(); // Naa diri ang container implementation
-        InitializePanelDesign(); // Implementation ni aissha sa panel
+        InitializePanelDesign(); // Implementation ni aissha sa panel design
     }
 
     private void applyPanelRecessBorder(JPanel panel, Color color) {
@@ -60,9 +60,14 @@ public class Collection extends JFrame {
         // Optional: Set the retro background color
         panel.setBackground(color);
     }
+
+    /**
+     * Kong naa kai e add nga component sa forms
+     * Just setFont to PixelSans
+     */
     private void setAllFonts(){
-        if (CategoriesDropDown != null) CategoriesDropDown.setFont(PixelSans);
-        if (TitleText != null) TitleText.setFont(PixelSans);
+        CategoriesDropDown.setFont(PixelSans);
+        TitleText.setFont(PixelSans);
         // ... Add font to a component here, just do it like ^^ //
     }
     private void applyButtonBorder(JButton button) {
@@ -91,6 +96,7 @@ public class Collection extends JFrame {
         Image scaled = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
     }
+
     private void InitializeScrollableContainer(){
         ArrayList<ImageIcon> sampleImages = new ArrayList<>();
         sampleImages.add(new ImageIcon(getClass().getResource("/clothing-images/input.jpg")));
@@ -124,10 +130,6 @@ public class Collection extends JFrame {
         JScrollPane scrollPane = new JScrollPane(galleryPanel,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        // DON'T force a preferred size on the scroll pane here.
-        // If you want the window smaller/larger, adjust frame sizing instead.
-        // scrollPane.setPreferredSize(new Dimension(800, 600)); // <-- removed
 
         // Add the scroll pane into the collectionPanel placeholder
         collectionPanel.add(scrollPane, BorderLayout.CENTER);
