@@ -4,13 +4,28 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
+
 public class Collection extends JFrame {
+
+    // fields for removingShit
+    private JLabel selectedClotheLabel = null;
+    private Color originalBorderColor = new Color(150, 150, 150);
+    private Color selectionBorderColor = Color.RED;
+
+
+
+    ArrayList<ImageIcon> clothes = new ArrayList<>();
+    JPanel galleryPanel;
+
     private JPanel wardrobePanel;
     private JPanel titlePanel;
     private JButton xButton;
@@ -19,6 +34,8 @@ public class Collection extends JFrame {
     private JPanel collectionPanel; // placeholder from GUI form
     private JComboBox CategoriesDropDown;
     private JLabel TitleText;
+    private JButton removeButton;
+    private JButton addButton;
     private JButton rightButton;
     private JButton leftButton;
     private JLabel clotheLabel;
@@ -26,7 +43,7 @@ public class Collection extends JFrame {
 
     public Collection(){
         applyButtonBorder(xButton); // border effect for buttons
-
+        galleryPanel = new JPanel(new WrapLayout(FlowLayout.LEFT, 20, 20));
         // --- Initializing the font --- //
         try {
             PixelSans = Font.createFont(Font.TRUETYPE_FONT, new File("Pixelify_Sans/static/PixelifySans-Regular.ttf")).deriveFont(14f);
@@ -37,6 +54,25 @@ public class Collection extends JFrame {
 
         InitializeScrollableContainer(); // Naa diri ang container implementation
         InitializePanelDesign(); // Implementation ni aissha sa panel design
+
+
+
+
+        // Add and remove button listeners
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Master Etcuban make me mini GUI for uploading image and removing their background kung humana tas mga mga uban pls para magamit na nako ang clothing class instead of the imageIcon
+                ImageIcon tempIconYawa = (new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")));
+                AddShit(tempIconYawa);
+            }
+        });
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                removeShit(); // Call the unified removal method
+            }
+        });
     }
 
     private void applyPanelRecessBorder(JPanel panel, Color color) {
@@ -97,33 +133,58 @@ public class Collection extends JFrame {
         return new ImageIcon(scaled);
     }
 
+
+    // should be replaced with ClothingClass when we done
+    private void adderToPanel(ImageIcon clothe) {
+        ImageIcon resized = resize(clothe, 180, 180);
+
+        // 1. Create the JLabel
+        JLabel label = new JLabel(resized);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setBorder(BorderFactory.createLineBorder(originalBorderColor));
+        label.setOpaque(true);
+        label.setBackground(Color.WHITE);
+
+        // 2. Add the Mouse Listener to select/highlight the clicked item
+        label.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Deselect the previous item
+                if (selectedClotheLabel != null) {
+                    selectedClotheLabel.setBorder(
+                            BorderFactory.createLineBorder(originalBorderColor)
+                    );
+                }
+
+                // Select the current item
+                selectedClotheLabel = label;
+                selectedClotheLabel.setBorder(
+                        BorderFactory.createLineBorder(selectionBorderColor, 3) // Thicker red border
+                );
+            }
+        });
+
+        galleryPanel.add(label);
+    }
+
     private void InitializeScrollableContainer(){
-        ArrayList<ImageIcon> sampleImages = new ArrayList<>();
-        sampleImages.add(new ImageIcon(getClass().getResource("/clothing-images/input.jpg")));
-        sampleImages.add(new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")));
-        sampleImages.add(new ImageIcon(getClass().getResource("/clothing-images/shirt_2.jpg")));
-        for (int i = 0; i < 100; i++) {
-            sampleImages.add(new ImageIcon(getClass().getResource("/clothing-images/shirt_2.jpg")));
+        ArrayList<ImageIcon> clothes = new ArrayList<>();
+        clothes.add(new ImageIcon(getClass().getResource("/clothing-images/input.jpg")));
+        clothes.add(new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")));
+        clothes.add(new ImageIcon(getClass().getResource("/clothing-images/shirt_2.jpg")));
+        for (int i = 0; i < 10; i++) {
+            clothes.add(new ImageIcon(getClass().getResource("/clothing-images/shirt_2.jpg")));
         }
         // Make collectionPanel act as a container for the scroll pane
         collectionPanel.setLayout(new BorderLayout());
 
         // Create a separate galleryPanel that uses WrapLayout (wraps and computes preferred height)
-        JPanel galleryPanel = new JPanel(new WrapLayout(FlowLayout.LEFT, 20, 20));
         galleryPanel.setOpaque(true);
         galleryPanel.setBackground(Color.WHITE);
 
         // Fill galleryPanel with resized JLabels
-        for (ImageIcon icon : sampleImages) {
-            ImageIcon resized = resize(icon, 180, 180);
-
-            JLabel label = new JLabel(resized);
-            label.setHorizontalAlignment(SwingConstants.CENTER);
-            label.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150)));
-            label.setOpaque(true);
-            label.setBackground(Color.WHITE);
-
-            galleryPanel.add(label);
+        for (ImageIcon icon : clothes) {
+            adderToPanel(icon);
         }
 
         // Put the galleryPanel inside a JScrollPane
@@ -174,4 +235,56 @@ public class Collection extends JFrame {
 
         SwingUtilities.invokeLater(() -> new Collection());
     }
+
+
+    void AddShit(ImageIcon img) {
+        clothes.add(img);
+        adderToPanel(img);
+
+        galleryPanel.revalidate();
+        galleryPanel.repaint();
+    }
+
+
+    void removeShit() {
+        // 1. Check if an item is selected
+        if (selectedClotheLabel == null) {
+            JOptionPane.showMessageDialog(this, "Please select a clothing item to remove.", "No Item Selected", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 2. Extract the ImageIcon from the JLabel
+        // The JLabel's icon is the resized version of the original ImageIcon
+        ImageIcon iconToRemove = (ImageIcon)selectedClotheLabel.getIcon();
+
+        // NOTE: If you were tracking the un-resized image, you'd need a map or custom object.
+        // For this simple case, we try to remove the icon from the data list.
+
+        // 3. Remove the image from the DATA list (clothes ArrayList)
+        // We iterate because we need to find the exact object reference to remove.
+        // If the clothes list only contains the original, un-resized images, this will fail.
+        // Assuming for now that the icons are distinguishable:
+        if (clothes.contains(iconToRemove)) {
+            clothes.remove(iconToRemove);
+        } else {
+            // --- IMPORTANT CAVEAT ---
+            // If clothes only contains the ORIGINAL image and the JLabel holds the RESIZED one,
+            // they are different objects! This is why a proper ClothingClass is better.
+            // For a simple fix, you might need to iterate through the data and compare URLs/paths.
+            // For this example, we will focus only on removing the JLabel from the panel:
+            System.out.println("Warning: Icon not found in data list. Removing from view only.");
+        }
+
+        // 4. Remove the JLabel from the VIEW (galleryPanel)
+        galleryPanel.remove(selectedClotheLabel);
+
+        // 5. Clear the selection reference
+        selectedClotheLabel = null;
+
+        // 6. Force the UI to update (Crucial!)
+        galleryPanel.revalidate();
+        galleryPanel.repaint();
+    }
+
+
 }
