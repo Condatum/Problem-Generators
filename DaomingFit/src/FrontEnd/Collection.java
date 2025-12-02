@@ -13,8 +13,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
+// classes related to clothing is in here
+import relatedToClothesUWU.*;
+
 
 public class Collection extends JFrame {
+
+    //field for POTANGINAAAAAAAAAAAA i mean, arraylist of Clothing
+    ArrayList<ClothingItem> clothesData;
 
     // fields for removingShit
     private JLabel selectedClotheLabel = null;
@@ -44,6 +50,7 @@ public class Collection extends JFrame {
     public Collection(){
         applyButtonBorder(xButton); // border effect for buttons
         galleryPanel = new JPanel(new WrapLayout(FlowLayout.LEFT, 20, 20));
+        clothesData = new ArrayList<>();
         // --- Initializing the font --- //
         try {
             PixelSans = Font.createFont(Font.TRUETYPE_FONT, new File("Pixelify_Sans/static/PixelifySans-Regular.ttf")).deriveFont(14f);
@@ -135,17 +142,18 @@ public class Collection extends JFrame {
 
 
     // should be replaced with ClothingClass when we done
-    private void adderToPanel(ImageIcon clothe) {
-        ImageIcon resized = resize(clothe, 180, 180);
+    private void adderToPanel(ClothingItem item) {
+        ImageIcon resized = resize(item.getClothesImage(), 180, 180);
 
         // 1. Create the JLabel
         JLabel label = new JLabel(resized);
+        label.putClientProperty("ClothingItem", item);        // --- END ATTACHMENT ---
+
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setBorder(BorderFactory.createLineBorder(originalBorderColor));
         label.setOpaque(true);
         label.setBackground(Color.WHITE);
 
-        // 2. Add the Mouse Listener to select/highlight the clicked item
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -156,10 +164,9 @@ public class Collection extends JFrame {
                     );
                 }
 
-                // Select the current item
                 selectedClotheLabel = label;
                 selectedClotheLabel.setBorder(
-                        BorderFactory.createLineBorder(selectionBorderColor, 3) // Thicker red border
+                        BorderFactory.createLineBorder(selectionBorderColor, 3)
                 );
             }
         });
@@ -169,11 +176,11 @@ public class Collection extends JFrame {
 
     private void InitializeScrollableContainer(){
         ArrayList<ImageIcon> clothes = new ArrayList<>();
-        clothes.add(new ImageIcon(getClass().getResource("/clothing-images/input.jpg")));
-        clothes.add(new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")));
-        clothes.add(new ImageIcon(getClass().getResource("/clothing-images/shirt_2.jpg")));
+        clothesData.add(new ClothingItem(new ImageIcon(getClass().getResource("/clothing-images/input.jpg")), Category.TOP));
+        clothesData.add(new ClothingItem(new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
         for (int i = 0; i < 10; i++) {
-            clothes.add(new ImageIcon(getClass().getResource("/clothing-images/shirt_2.jpg")));
+            clothesData.add(new ClothingItem(new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
+
         }
         // Make collectionPanel act as a container for the scroll pane
         collectionPanel.setLayout(new BorderLayout());
@@ -183,8 +190,8 @@ public class Collection extends JFrame {
         galleryPanel.setBackground(Color.WHITE);
 
         // Fill galleryPanel with resized JLabels
-        for (ImageIcon icon : clothes) {
-            adderToPanel(icon);
+        for (ClothingItem item : clothesData) {
+            adderToPanel(item); // Pass the ClothingItem object
         }
 
         // Put the galleryPanel inside a JScrollPane
@@ -238,8 +245,11 @@ public class Collection extends JFrame {
 
 
     void AddShit(ImageIcon img) {
-        clothes.add(img);
-        adderToPanel(img);
+        ClothingItem newItem = new ClothingItem(img, Category.TOP);
+
+        clothesData.add(newItem);
+
+        adderToPanel(newItem);
 
         galleryPanel.revalidate();
         galleryPanel.repaint();
@@ -247,43 +257,29 @@ public class Collection extends JFrame {
 
 
     void removeShit() {
-        // 1. Check if an item is selected
         if (selectedClotheLabel == null) {
             JOptionPane.showMessageDialog(this, "Please select a clothing item to remove.", "No Item Selected", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // 2. Extract the ImageIcon from the JLabel
-        // The JLabel's icon is the resized version of the original ImageIcon
-        ImageIcon iconToRemove = (ImageIcon)selectedClotheLabel.getIcon();
+        ClothingItem itemToRemove = (ClothingItem)selectedClotheLabel.getClientProperty("ClothingItem");
+        if (itemToRemove != null) {
+            // 1. Remove the item from the DATA list (Model)
+            clothesData.remove(itemToRemove);
 
-        // NOTE: If you were tracking the un-resized image, you'd need a map or custom object.
-        // For this simple case, we try to remove the icon from the data list.
+            // 2. Remove the JLabel from the VIEW (galleryPanel)
+            galleryPanel.remove(selectedClotheLabel);
 
-        // 3. Remove the image from the DATA list (clothes ArrayList)
-        // We iterate because we need to find the exact object reference to remove.
-        // If the clothes list only contains the original, un-resized images, this will fail.
-        // Assuming for now that the icons are distinguishable:
-        if (clothes.contains(iconToRemove)) {
-            clothes.remove(iconToRemove);
+            // 3. Clear the selection reference
+            selectedClotheLabel = null;
+
+            // 4. Force the UI to update
+            galleryPanel.revalidate();
+            galleryPanel.repaint();
         } else {
-            // --- IMPORTANT CAVEAT ---
-            // If clothes only contains the ORIGINAL image and the JLabel holds the RESIZED one,
-            // they are different objects! This is why a proper ClothingClass is better.
-            // For a simple fix, you might need to iterate through the data and compare URLs/paths.
-            // For this example, we will focus only on removing the JLabel from the panel:
-            System.out.println("Warning: Icon not found in data list. Removing from view only.");
+            System.out.println("YAWA SHERRY GET OUT OF MY MIND PLEASE I NEED TO CONTRIBUTE TO MY CAPTSON PROJECT NIGGAAAAAAAAAA");
+            System.out.println("Error: Could not retrieve ClothingItem data from selected label.");
         }
-
-        // 4. Remove the JLabel from the VIEW (galleryPanel)
-        galleryPanel.remove(selectedClotheLabel);
-
-        // 5. Clear the selection reference
-        selectedClotheLabel = null;
-
-        // 6. Force the UI to update (Crucial!)
-        galleryPanel.revalidate();
-        galleryPanel.repaint();
     }
 
 

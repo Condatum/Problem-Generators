@@ -43,7 +43,7 @@
               <font name="DialogInput" size="12"/>
               <foreground color="-1"/>
               <requestFocusEnabled value="true"/>
-              <text value="DaoMing Fit - Outfit Maker"/>
+              <text value="DaoMing Fit - relatedToClothesUWU.Outfit Maker"/>
             </properties>
           </component>
           <component id="67556" class="javax.swing.JLabel" binding="icon">

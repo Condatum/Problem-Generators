@@ -1,3 +1,5 @@
+package relatedToClothesUWU;
+
 public class Outfit {
     private ClothingItem top;
     private ClothingItem bottom;

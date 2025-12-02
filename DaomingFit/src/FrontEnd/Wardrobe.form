@@ -42,7 +42,7 @@
               <background color="-1"/>
               <font name="DialogInput" size="12"/>
               <foreground color="-1"/>
-              <text value="DaoMing Fit - Outfit Maker"/>
+              <text value="DaoMing Fit - relatedToClothesUWU.Outfit Maker"/>
             </properties>
           </component>
           <component id="67556" class="javax.swing.JLabel" binding="icon">
@@ -77,7 +77,7 @@
               <horizontalAlignment value="0"/>
               <minimumSize width="350" height="30"/>
               <preferredSize width="350" height="30"/>
-              <text value="Create Outfit"/>
+              <text value="Create relatedToClothesUWU.Outfit"/>
             </properties>
           </component>
           <grid id="23bde" binding="clothesPanel" layout-manager="GridBagLayout">
