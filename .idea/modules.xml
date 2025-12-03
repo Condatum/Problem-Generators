@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CSIT227 Capstone.iml" filepath="$PROJECT_DIR$/CSIT227 Capstone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Problem-Generators.iml" filepath="$PROJECT_DIR$/.idea/Problem-Generators.iml" />
     </modules>
   </component>
 </project>
