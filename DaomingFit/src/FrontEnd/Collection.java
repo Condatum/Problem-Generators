@@ -38,13 +38,15 @@ public class Collection extends JFrame {
     private JLabel icon;
     private JPanel contentPanel;
     private JPanel collectionPanel; // placeholder from GUI form
-    private JComboBox CategoriesDropDown;
     private JLabel TitleText;
     private JButton removeButton;
     private JButton addButton;
     private JButton rightButton;
     private JButton leftButton;
     private JLabel clotheLabel;
+    private JButton topButton;
+    private JButton bottomButton;
+    private JButton footwearButton;
     private Font PixelSans;
 
     public Collection(){
@@ -53,7 +55,7 @@ public class Collection extends JFrame {
         clothesData = new ArrayList<>();
         // --- Initializing the font --- //
         try {
-            PixelSans = Font.createFont(Font.TRUETYPE_FONT, new File("Pixelify_Sans/static/PixelifySans-Regular.ttf")).deriveFont(14f);
+            PixelSans = Font.createFont(Font.TRUETYPE_FONT, new File("PixelifySans-Regular.ttf")).deriveFont(14f);
         }catch(FontFormatException | IOException e){
             System.out.println("Font not found...");
         } setAllFonts();
@@ -80,6 +82,10 @@ public class Collection extends JFrame {
                 removeShit(); // Call the unified removal method
             }
         });
+
+        topButton.addActionListener(e -> categoryFilter(Category.TOP));
+        bottomButton.addActionListener(e -> categoryFilter(Category.BOTTOM));
+        footwearButton.addActionListener(e -> categoryFilter(Category.FOOTWEAR));
     }
 
     private void applyPanelRecessBorder(JPanel panel, Color color) {
@@ -109,7 +115,6 @@ public class Collection extends JFrame {
      * Just setFont to PixelSans
      */
     private void setAllFonts(){
-        CategoriesDropDown.setFont(PixelSans);
         TitleText.setFont(PixelSans);
         // ... Add font to a component here, just do it like ^^ //
     }
@@ -282,5 +287,15 @@ public class Collection extends JFrame {
         }
     }
 
+    private void categoryFilter (Category category){
+        galleryPanel.removeAll();
+        for(ClothingItem item : clothesData){
+            if(item.getCategory() == category){
+                adderToPanel(item);
+            }
+        }
+        galleryPanel.revalidate();
+        galleryPanel.repaint();
+    }
 
 }

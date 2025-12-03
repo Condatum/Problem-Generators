@@ -18,5 +18,4 @@ public class ClothingItem {
     public ImageIcon getClothesImage() {
         return clothesImage;
     }
-
 }
