@@ -47,6 +47,7 @@ public class Collection extends JFrame {
     private JButton topButton;
     private JButton bottomButton;
     private JButton footwearButton;
+    private boolean top = false, bottom = false, footwear = false;
     private Font PixelSans;
 
     public Collection(){
@@ -82,10 +83,6 @@ public class Collection extends JFrame {
                 removeShit(); // Call the unified removal method
             }
         });
-
-        topButton.addActionListener(e -> categoryFilter(Category.TOP));
-        bottomButton.addActionListener(e -> categoryFilter(Category.BOTTOM));
-        footwearButton.addActionListener(e -> categoryFilter(Category.FOOTWEAR));
     }
 
     private void applyPanelRecessBorder(JPanel panel, Color color) {
@@ -180,11 +177,12 @@ public class Collection extends JFrame {
     }
 
     private void InitializeScrollableContainer(){
-        ArrayList<ImageIcon> clothes = new ArrayList<>();
-        clothesData.add(new ClothingItem(new ImageIcon(getClass().getResource("/clothing-images/input.jpg")), Category.TOP));
-        clothesData.add(new ClothingItem(new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
+        clothesData.add(new ClothingItem("/clothing-images/input.jpg", new ImageIcon(getClass().getResource("/clothing-images/input.jpg")), Category.TOP));
+        clothesData.add(new ClothingItem("/clothing-images/shirt_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
+        clothesData.add(new ClothingItem("/clothing-images/pants_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/pants_1.jpg")), Category.BOTTOM));
+        clothesData.add(new ClothingItem("/clothing-images/shoes_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/shoes_1.jpg")), Category.FOOTWEAR));
         for (int i = 0; i < 10; i++) {
-            clothesData.add(new ClothingItem(new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
+            clothesData.add(new ClothingItem("/clothing-images/shirt_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
 
         }
         // Make collectionPanel act as a container for the scroll pane
@@ -219,6 +217,25 @@ public class Collection extends JFrame {
         Color white = new Color(255,255,255);// border effect for panels
         applyPanelRecessBorder(contentPanel, gray);
         applyPanelRecessBorder(collectionPanel, white);
+
+        topButton.addActionListener(e -> {
+            footwear = false;
+            bottom = false;
+            top = true;
+        categoryFilter(Category.TOP);
+        });
+        bottomButton.addActionListener(e -> {
+            footwear = false;
+            top = false;
+            bottom = true;
+            categoryFilter(Category.BOTTOM);
+        });
+        footwearButton.addActionListener(e -> {
+            bottom = false;
+            top = false;
+            footwear = true;
+            categoryFilter(Category.FOOTWEAR);
+        });
         xButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -250,11 +267,19 @@ public class Collection extends JFrame {
 
 
     void AddShit(ImageIcon img) {
-        ClothingItem newItem = new ClothingItem(img, Category.TOP);
-
-        clothesData.add(newItem);
-
-        adderToPanel(newItem);
+        if(top == true){
+            ClothingItem newItem = new ClothingItem("/clothing-images/input.jpg", img, Category.TOP);
+            clothesData.add(newItem);
+            adderToPanel(newItem);
+        }else if(bottom == true){
+            ClothingItem newItem = new ClothingItem("/clothing-images/pants_1.jpg", img, Category.BOTTOM);
+            clothesData.add(newItem);
+            adderToPanel(newItem);
+        }else if(footwear == true){
+            ClothingItem newItem = new ClothingItem("/clothing-images/shoes_1.jpg", img, Category.FOOTWEAR);
+            clothesData.add(newItem);
+            adderToPanel(newItem);
+        }
 
         galleryPanel.revalidate();
         galleryPanel.repaint();
