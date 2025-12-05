@@ -16,7 +16,6 @@ import java.util.ArrayList;
 // classes related to clothing is in here
 import relatedToClothesUWU.*;
 
-
 public class Collection extends JFrame {
 
     //field for POTANGINAAAAAAAAAAAA i mean, arraylist of Clothing
@@ -50,42 +49,46 @@ public class Collection extends JFrame {
     private boolean top = false, bottom = false, footwear = false;
     private Font PixelSans;
 
-    public Collection(){
-        applyButtonBorder(xButton); // border effect for buttons
-        galleryPanel = new JPanel(new WrapLayout(FlowLayout.LEFT, 20, 20));
-        clothesData = new ArrayList<>();
-        // --- Initializing the font --- //
+    public Collection() {
+
+
+        // --- Initialize font first ---
         try {
             PixelSans = Font.createFont(Font.TRUETYPE_FONT, new File("PixelifySans-Regular.ttf")).deriveFont(14f);
-        }catch(FontFormatException | IOException e){
+        } catch (FontFormatException | IOException e) {
             System.out.println("Font not found...");
-        } setAllFonts();
-        // --- Initializing the font --- //
+            PixelSans = TitleText != null ? TitleText.getFont() : new Font("Arial", Font.PLAIN, 14);
+        }
 
-        InitializeScrollableContainer(); // Naa diri ang container implementation
-        InitializePanelDesign(); // Implementation ni aissha sa panel design
+        // --- Set font safely ---
+        setAllFonts();
 
+        // --- Initialize data and gallery panel ---
+        clothesData = new ArrayList<>();
+        galleryPanel = new JPanel(new WrapLayout(FlowLayout.LEFT, 20, 20));
 
+        // --- Run your existing setup methods ---
+        InitializeScrollableContainer();
+        InitializePanelDesign();
 
+        // --- Button listeners ---
+        if (addButton != null) {
 
-        // Add and remove button listeners
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Master Etcuban make me mini GUI for uploading image and removing their background kung humana tas mga mga uban pls para magamit na nako ang clothing class instead of the imageIcon
-                ImageIcon tempIconYawa = (new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")));
-                AddShit(tempIconYawa);
-            }
-        });
-        removeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removeShit(); // Call the unified removal method
-            }
-        });
+            addButton.addActionListener(e -> AddShit(selectImageFromFileExplorer()));
+        }
+
+        if (removeButton != null) {
+            removeButton.addActionListener(e -> removeShit());
+        }
+
+        // Make sure window is visible
+        setVisible(true);
     }
 
+
     private void applyPanelRecessBorder(JPanel panel, Color color) {
+        if (panel == null) return; // ADDED NULL CHECK
+
         final int BORDER_WEIGHT = 3;
         Border bevelBorder = BorderFactory.createBevelBorder(
                 BevelBorder.LOWERED,
@@ -112,10 +115,18 @@ public class Collection extends JFrame {
      * Just setFont to PixelSans
      */
     private void setAllFonts(){
-        TitleText.setFont(PixelSans);
+        if (TitleText != null) TitleText.setFont(PixelSans);
+        if (addButton != null) addButton.setFont(PixelSans);
+        if (removeButton != null) removeButton.setFont(PixelSans);
+        if (topButton != null) topButton.setFont(PixelSans);
+        if (bottomButton != null) bottomButton.setFont(PixelSans);
+        if (footwearButton != null) footwearButton.setFont(PixelSans);
         // ... Add font to a component here, just do it like ^^ //
     }
+
     private void applyButtonBorder(JButton button) {
+        if (button == null) return; // ADDED NULL CHECK
+
         final int BORDER_WEIGHT = 3;
         Border bevelBorder = BorderFactory.createBevelBorder(
                 BevelBorder.RAISED,
@@ -125,18 +136,18 @@ public class Collection extends JFrame {
         Border weightBorder = new EmptyBorder(
                 BORDER_WEIGHT, BORDER_WEIGHT, BORDER_WEIGHT, BORDER_WEIGHT
         );
-        if (button != null) {
-            button.setBorder(
-                    BorderFactory.createCompoundBorder(
-                            weightBorder,
-                            bevelBorder
-                    )
-            );
-            button.setBackground(new Color(198, 198, 198));
-        }
+        button.setBorder(
+                BorderFactory.createCompoundBorder(
+                        weightBorder,
+                        bevelBorder
+                )
+        );
+        button.setBackground(new Color(198, 198, 198));
     }
 
     public ImageIcon resize(ImageIcon icon, int w, int h) {
+        if (icon == null) return null; // ADDED NULL CHECK
+
         Image img = icon.getImage();
         Image scaled = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
@@ -145,7 +156,10 @@ public class Collection extends JFrame {
 
     // should be replaced with ClothingClass when we done
     private void adderToPanel(ClothingItem item) {
+        if (item == null || item.getClothesImage() == null) return; // ADDED NULL CHECK
+
         ImageIcon resized = resize(item.getClothesImage(), 180, 180);
+        if (resized == null) return;
 
         // 1. Create the JLabel
         JLabel label = new JLabel(resized);
@@ -177,14 +191,24 @@ public class Collection extends JFrame {
     }
 
     private void InitializeScrollableContainer(){
-        clothesData.add(new ClothingItem("/clothing-images/input.jpg", new ImageIcon(getClass().getResource("/clothing-images/input.jpg")), Category.TOP));
-        clothesData.add(new ClothingItem("/clothing-images/shirt_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
-        clothesData.add(new ClothingItem("/clothing-images/pants_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/pants_1.jpg")), Category.BOTTOM));
-        clothesData.add(new ClothingItem("/clothing-images/shoes_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/shoes_1.jpg")), Category.FOOTWEAR));
-        for (int i = 0; i < 10; i++) {
+        try {
+            clothesData.add(new ClothingItem("/clothing-images/input.jpg", new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
             clothesData.add(new ClothingItem("/clothing-images/shirt_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
+            clothesData.add(new ClothingItem("/clothing-images/pants_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/pants_1.jpg")), Category.BOTTOM));
+            clothesData.add(new ClothingItem("/clothing-images/shoes_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/shoes_1.jpg")), Category.FOOTWEAR));
 
+            for (int i = 0; i < 10; i++) {
+                clothesData.add(new ClothingItem("/clothing-images/shirt_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading sample images: " + e.getMessage());
         }
+
+        if (collectionPanel == null) {
+            System.out.println("Error: collectionPanel is null!");
+            return;
+        }
+
         // Make collectionPanel act as a container for the scroll pane
         collectionPanel.setLayout(new BorderLayout());
 
@@ -203,6 +227,7 @@ public class Collection extends JFrame {
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         // Add the scroll pane into the collectionPanel placeholder
+        collectionPanel.removeAll();
         collectionPanel.add(scrollPane, BorderLayout.CENTER);
 
         // Ensure layout updates
@@ -212,74 +237,134 @@ public class Collection extends JFrame {
         // ---- // SETTING UP THE COLLECTION PANEL TO BE SCROLLABLE AND ADDING SAMPLE IMAGES // ---- //
         // --------------------------------------------------------------------------------------------//
     }
+
     private void InitializePanelDesign(){
+        if (contentPanel == null || collectionPanel == null) {
+            System.out.println("Error: Panels are null. Check your form initialization.");
+            return;
+        }
+
         Color gray = new Color(198, 198, 198);// border effect for panels
         Color white = new Color(255,255,255);// border effect for panels
         applyPanelRecessBorder(contentPanel, gray);
         applyPanelRecessBorder(collectionPanel, white);
 
-        topButton.addActionListener(e -> {
-            footwear = false;
-            bottom = false;
-            top = true;
-        categoryFilter(Category.TOP);
-        });
-        bottomButton.addActionListener(e -> {
-            footwear = false;
-            top = false;
-            bottom = true;
-            categoryFilter(Category.BOTTOM);
-        });
-        footwearButton.addActionListener(e -> {
-            bottom = false;
-            top = false;
-            footwear = true;
-            categoryFilter(Category.FOOTWEAR);
-        });
-        xButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.exit(0);
-            }
-        });
-        add(wardrobePanel);
+        // Apply borders to buttons
+        if (topButton != null) {
+            topButton.addActionListener(e -> {
+                footwear = false;
+                bottom = false;
+                top = true;
+                categoryFilter(Category.TOP);
+            });
+            applyButtonBorder(topButton);
+        }
+
+        if (bottomButton != null) {
+            bottomButton.addActionListener(e -> {
+                footwear = false;
+                top = false;
+                bottom = true;
+                categoryFilter(Category.BOTTOM);
+            });
+            applyButtonBorder(bottomButton);
+        }
+
+        if (footwearButton != null) {
+            footwearButton.addActionListener(e -> {
+                bottom = false;
+                top = false;
+                footwear = true;
+                categoryFilter(Category.FOOTWEAR);
+            });
+            applyButtonBorder(footwearButton);
+        }
+
+        if (addButton != null) applyButtonBorder(addButton);
+        if (removeButton != null) applyButtonBorder(removeButton);
+
+        if (xButton != null) {
+            xButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    System.exit(0);
+                }
+            });
+            applyButtonBorder(xButton);
+        }
+
+        if (wardrobePanel != null) {
+            add(wardrobePanel);
+        }
+
         setUndecorated(true);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
     public static void main(String[] args) {
-        final int BORDER_WEIGHT = 3;
-        Border customBorder = BorderFactory.createCompoundBorder(
-                new EmptyBorder(BORDER_WEIGHT, BORDER_WEIGHT, BORDER_WEIGHT, BORDER_WEIGHT),
-                BorderFactory.createBevelBorder(
-                        BevelBorder.RAISED,
-                        Color.WHITE, Color.WHITE,
-                        Color.BLACK, Color.BLACK
-                )
-        );
-
-        // Override the default border property for ALL JButtons
-        UIManager.put("Button.border", customBorder);
-
-        SwingUtilities.invokeLater(() -> new Collection());
+        SwingUtilities.invokeLater(() -> {
+            try {
+                Collection collection = new Collection();
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error starting application: " + e.getMessage());
+            }
+        });
     }
 
 
-    void AddShit(ImageIcon img) {
-        if(top == true){
-            ClothingItem newItem = new ClothingItem("/clothing-images/input.jpg", img, Category.TOP);
-            clothesData.add(newItem);
-            adderToPanel(newItem);
-        }else if(bottom == true){
-            ClothingItem newItem = new ClothingItem("/clothing-images/pants_1.jpg", img, Category.BOTTOM);
-            clothesData.add(newItem);
-            adderToPanel(newItem);
-        }else if(footwear == true){
-            ClothingItem newItem = new ClothingItem("/clothing-images/shoes_1.jpg", img, Category.FOOTWEAR);
-            clothesData.add(newItem);
-            adderToPanel(newItem);
+    private ImageIcon selectImageFromFileExplorer() {
+        JFileChooser fileChooser = new JFileChooser();
+
+        // Sets file filter for images only
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+                "Image files", "jpg", "jpeg", "png", "gif", "bmp"));
+
+        // Sets starting directory
+//        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try {
+                // Create ImageIcon from selected file
+                ImageIcon originalIcon = new ImageIcon(selectedFile.getAbsolutePath());
+                return originalIcon;
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Error loading image: " + e.getMessage(),
+                        "Load Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
+        return null;
+    }
+
+    void AddShit(ImageIcon img) {
+        Category categoryDecider = null;
+        if (img == null) {
+            System.out.println("Cannot add null image");
+            return;
+        }
+
+        //simplified hardcoded conditional statements
+        if(bottom) {
+            categoryDecider = Category.BOTTOM;
+
+        }else if(footwear){
+            categoryDecider = Category.FOOTWEAR;
+
+        } else {
+            categoryDecider = Category.TOP;
+        }
+
+        ClothingItem newItem = new ClothingItem("/clothing-images/shirt_1.jpg", img, categoryDecider);
+        clothesData.add(newItem);
+        adderToPanel(newItem);
+
 
         galleryPanel.revalidate();
         galleryPanel.repaint();
@@ -307,7 +392,6 @@ public class Collection extends JFrame {
             galleryPanel.revalidate();
             galleryPanel.repaint();
         } else {
-            System.out.println("YAWA SHERRY GET OUT OF MY MIND PLEASE I NEED TO CONTRIBUTE TO MY CAPTSON PROJECT NIGGAAAAAAAAAA");
             System.out.println("Error: Could not retrieve ClothingItem data from selected label.");
         }
     }
