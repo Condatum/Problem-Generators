@@ -46,7 +46,7 @@ public class Collection extends JFrame {
     private JButton topButton;
     private JButton bottomButton;
     private JButton footwearButton;
-    private boolean top = false, bottom = false, footwear = false;
+    private Category selectedCategory = Category.TOP;
     private Font PixelSans;
 
     public Collection() {
@@ -74,11 +74,11 @@ public class Collection extends JFrame {
         // --- Button listeners ---
         if (addButton != null) {
 
-            addButton.addActionListener(e -> AddShit(selectImageFromFileExplorer()));
+            addButton.addActionListener(e -> AddClothing(selectImageFromFileExplorer()));
         }
 
         if (removeButton != null) {
-            removeButton.addActionListener(e -> removeShit());
+            removeButton.addActionListener(e -> RemoveClothing());
         }
 
         // Make sure window is visible
@@ -249,12 +249,10 @@ public class Collection extends JFrame {
         applyPanelRecessBorder(contentPanel, gray);
         applyPanelRecessBorder(collectionPanel, white);
 
-        // Apply borders to buttons
+        //polished category system to be dynamic and not hardcoded.
         if (topButton != null) {
             topButton.addActionListener(e -> {
-                footwear = false;
-                bottom = false;
-                top = true;
+                selectedCategory = Category.TOP;
                 categoryFilter(Category.TOP);
             });
             applyButtonBorder(topButton);
@@ -262,9 +260,7 @@ public class Collection extends JFrame {
 
         if (bottomButton != null) {
             bottomButton.addActionListener(e -> {
-                footwear = false;
-                top = false;
-                bottom = true;
+                selectedCategory = Category.BOTTOM;
                 categoryFilter(Category.BOTTOM);
             });
             applyButtonBorder(bottomButton);
@@ -272,9 +268,7 @@ public class Collection extends JFrame {
 
         if (footwearButton != null) {
             footwearButton.addActionListener(e -> {
-                bottom = false;
-                top = false;
-                footwear = true;
+                selectedCategory = Category.FOOTWEAR;
                 categoryFilter(Category.FOOTWEAR);
             });
             applyButtonBorder(footwearButton);
@@ -342,24 +336,15 @@ public class Collection extends JFrame {
         }
         return null;
     }
-
-    void AddShit(ImageIcon img) {
-        Category categoryDecider = null;
+    // method name changed to AddClothing and RemoveClothing
+    void AddClothing(ImageIcon img) {
+        //Replaced conditional statements for a more dynamic system.
+        Category categoryDecider = selectedCategory;
         if (img == null) {
             System.out.println("Cannot add null image");
             return;
         }
 
-        //simplified hardcoded conditional statements
-        if(bottom) {
-            categoryDecider = Category.BOTTOM;
-
-        }else if(footwear){
-            categoryDecider = Category.FOOTWEAR;
-
-        } else {
-            categoryDecider = Category.TOP;
-        }
 
         ClothingItem newItem = new ClothingItem("/clothing-images/shirt_1.jpg", img, categoryDecider);
         clothesData.add(newItem);
@@ -371,7 +356,7 @@ public class Collection extends JFrame {
     }
 
 
-    void removeShit() {
+    void RemoveClothing() {
         if (selectedClotheLabel == null) {
             JOptionPane.showMessageDialog(this, "Please select a clothing item to remove.", "No Item Selected", JOptionPane.WARNING_MESSAGE);
             return;
