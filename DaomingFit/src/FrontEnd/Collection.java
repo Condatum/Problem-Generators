@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 // classes related to clothing is in here
@@ -20,8 +21,8 @@ public class Collection extends JFrame {
     ArrayList<ClothingItem> clothesData;
     // fields for removingShit
     private JLabel selectedClotheLabel = null;
-    private Color originalBorderColor = new Color(150, 150, 150);
-    private Color selectionBorderColor = Color.RED;
+    private final Color originalBorderColor = new Color(150, 150, 150);
+    private final Color selectionBorderColor = Color.RED;
     ArrayList<ImageIcon> clothes = new ArrayList<>();
     JPanel galleryPanel;
     private JPanel wardrobePanel;
@@ -46,7 +47,7 @@ public class Collection extends JFrame {
         // --- Initialize font first ---
         try {
             InputStream is = getClass().getResourceAsStream("/PixelifySans-Regular.ttf");
-            PixelSans = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(14f);
+            PixelSans = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(14f);
         } catch (FontFormatException | IOException e) {
             System.out.println("Font not found...");
             PixelSans = TitleText != null ? TitleText.getFont() : new Font("Arial", Font.PLAIN, 14);
@@ -65,11 +66,11 @@ public class Collection extends JFrame {
 
         // --- Button listeners ---
         if (addButton != null) {
-            addButton.addActionListener(e -> AddClothing(selectImageFromFileExplorer()));
+            addButton.addActionListener(_ -> AddClothing(selectImageFromFileExplorer()));
         }
 
         if (removeButton != null) {
-            removeButton.addActionListener(e -> RemoveClothing());
+            removeButton.addActionListener(_ -> RemoveClothing());
         }
 
         /*
@@ -89,9 +90,9 @@ public class Collection extends JFrame {
         Categories.revalidate();
         Categories.repaint();
         Categories.setOpaque(false);
-        ImageIcon topIcon = new ImageIcon(getClass().getResource("/CategoryButtons/shirt1.png"));
-        ImageIcon bottomIcon = new ImageIcon(getClass().getResource("/CategoryButtons/pants2logo1.png"));
-        ImageIcon footIcon = new ImageIcon(getClass().getResource("/CategoryButtons/shoes2logo1.png"));
+        ImageIcon topIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/CategoryButtons/shirt1.png")));
+        ImageIcon bottomIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/CategoryButtons/pants2logo1.png")));
+        ImageIcon footIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/CategoryButtons/shoes2logo1.png")));
         Image scaled = topIcon.getImage().getScaledInstance(33, 33, Image.SCALE_SMOOTH);
         Image scaled2 = bottomIcon.getImage().getScaledInstance(33, 33, Image.SCALE_SMOOTH);
         Image scaled3 = footIcon.getImage().getScaledInstance(33, 33, Image.SCALE_SMOOTH);
@@ -206,13 +207,13 @@ public class Collection extends JFrame {
 
     private void InitializeScrollableContainer(){
         try {
-            clothesData.add(new ClothingItem("/clothing-images/input.jpg", new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
-            clothesData.add(new ClothingItem("/clothing-images/shirt_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
-            clothesData.add(new ClothingItem("/clothing-images/pants_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/pants_1.jpg")), Category.BOTTOM));
-            clothesData.add(new ClothingItem("/clothing-images/shoes_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/shoes_1.jpg")), Category.FOOTWEAR));
+            clothesData.add(new ClothingItem("/clothing-images/input.jpg", new ImageIcon(Objects.requireNonNull(getClass().getResource("/clothing-images/shirt_1.jpg"))), Category.TOP));
+            clothesData.add(new ClothingItem("/clothing-images/shirt_1.jpg", new ImageIcon(Objects.requireNonNull(getClass().getResource("/clothing-images/shirt_1.jpg"))), Category.TOP));
+            clothesData.add(new ClothingItem("/clothing-images/pants_1.jpg", new ImageIcon(Objects.requireNonNull(getClass().getResource("/clothing-images/pants_1.jpg"))), Category.BOTTOM));
+            clothesData.add(new ClothingItem("/clothing-images/shoes_1.jpg", new ImageIcon(Objects.requireNonNull(getClass().getResource("/clothing-images/shoes_1.jpg"))), Category.FOOTWEAR));
 
             for (int i = 0; i < 10; i++) {
-                clothesData.add(new ClothingItem("/clothing-images/shirt_1.jpg", new ImageIcon(getClass().getResource("/clothing-images/shirt_1.jpg")), Category.TOP));
+                clothesData.add(new ClothingItem("/clothing-images/shirt_1.jpg", new ImageIcon(Objects.requireNonNull(getClass().getResource("/clothing-images/shirt_1.jpg"))), Category.TOP));
             }
         } catch (Exception e) {
             System.out.println("Error loading sample images: " + e.getMessage());
@@ -338,8 +339,7 @@ public class Collection extends JFrame {
             File selectedFile = fileChooser.getSelectedFile();
             try {
                 // Create ImageIcon from selected file
-                ImageIcon originalIcon = new ImageIcon(selectedFile.getAbsolutePath());
-                return originalIcon;
+                return new ImageIcon(selectedFile.getAbsolutePath());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this,
                         "Error loading image: " + e.getMessage(),
