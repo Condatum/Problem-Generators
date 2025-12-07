@@ -4,12 +4,11 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 
@@ -17,20 +16,14 @@ import java.util.ArrayList;
 import relatedToClothesUWU.*;
 
 public class Collection extends JFrame {
-
     //field for POTANGINAAAAAAAAAAAA i mean, arraylist of Clothing
     ArrayList<ClothingItem> clothesData;
-
     // fields for removingShit
     private JLabel selectedClotheLabel = null;
     private Color originalBorderColor = new Color(150, 150, 150);
     private Color selectionBorderColor = Color.RED;
-
-
-
     ArrayList<ImageIcon> clothes = new ArrayList<>();
     JPanel galleryPanel;
-
     private JPanel wardrobePanel;
     private JPanel titlePanel;
     private JButton xButton;
@@ -46,15 +39,14 @@ public class Collection extends JFrame {
     private JButton topButton;
     private JButton bottomButton;
     private JButton footwearButton;
+    private JPanel Categories;
     private Category selectedCategory = Category.TOP;
     private Font PixelSans;
-
     public Collection() {
-
-
         // --- Initialize font first ---
         try {
-            PixelSans = Font.createFont(Font.TRUETYPE_FONT, new File("PixelifySans-Regular.ttf")).deriveFont(14f);
+            InputStream is = getClass().getResourceAsStream("/PixelifySans-Regular.ttf");
+            PixelSans = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(14f);
         } catch (FontFormatException | IOException e) {
             System.out.println("Font not found...");
             PixelSans = TitleText != null ? TitleText.getFont() : new Font("Arial", Font.PLAIN, 14);
@@ -73,7 +65,6 @@ public class Collection extends JFrame {
 
         // --- Button listeners ---
         if (addButton != null) {
-
             addButton.addActionListener(e -> AddClothing(selectImageFromFileExplorer()));
         }
 
@@ -81,14 +72,37 @@ public class Collection extends JFrame {
             removeButton.addActionListener(e -> RemoveClothing());
         }
 
+        /*
+        Initializing the categories panel to hold all buttons...
+         */
+        categoriesDesignInit();
+
         // Make sure window is visible
         setVisible(true);
     }
-
+    private void categoriesDesignInit(){
+        Categories.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        JPanel spacer = new JPanel();
+        spacer.setOpaque(false);
+        spacer.setPreferredSize(new Dimension(600, 1));
+        Categories.add(spacer, 3);  // index 3 = before removeButton
+        Categories.revalidate();
+        Categories.repaint();
+        Categories.setOpaque(false);
+        ImageIcon topIcon = new ImageIcon(getClass().getResource("/CategoryButtons/shirt1.png"));
+        ImageIcon bottomIcon = new ImageIcon(getClass().getResource("/CategoryButtons/pants2logo1.png"));
+        ImageIcon footIcon = new ImageIcon(getClass().getResource("/CategoryButtons/shoes2logo1.png"));
+        Image scaled = topIcon.getImage().getScaledInstance(33, 33, Image.SCALE_SMOOTH);
+        Image scaled2 = bottomIcon.getImage().getScaledInstance(33, 33, Image.SCALE_SMOOTH);
+        Image scaled3 = footIcon.getImage().getScaledInstance(33, 33, Image.SCALE_SMOOTH);
+        topButton.setIcon(new ImageIcon(scaled));
+        bottomButton.setIcon(new ImageIcon(scaled2));
+        footwearButton.setIcon(new ImageIcon(scaled3));
+        applyFixedButtonSizes();  // Change button size in this method
+    }
 
     private void applyPanelRecessBorder(JPanel panel, Color color) {
         if (panel == null) return; // ADDED NULL CHECK
-
         final int BORDER_WEIGHT = 3;
         Border bevelBorder = BorderFactory.createBevelBorder(
                 BevelBorder.LOWERED,
@@ -225,6 +239,7 @@ public class Collection extends JFrame {
         JScrollPane scrollPane = new JScrollPane(galleryPanel,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                applyRetroScrollBarStyle(scrollPane); // Applie retro ScrollPane
 
         // Add the scroll pane into the collectionPanel placeholder
         collectionPanel.removeAll();
@@ -307,8 +322,6 @@ public class Collection extends JFrame {
             }
         });
     }
-
-
     private ImageIcon selectImageFromFileExplorer() {
         JFileChooser fileChooser = new JFileChooser();
 
@@ -391,5 +404,81 @@ public class Collection extends JFrame {
         galleryPanel.revalidate();
         galleryPanel.repaint();
     }
+    /*
+    Sets the design for the ScrollBar
+     */
+    private void applyRetroScrollBarStyle(JScrollPane scrollPane) {
+        Color light = new Color(255, 255, 255);
+        Color mid   = new Color(198, 198, 198);
+        Color dark  = new Color(0, 0, 0);
+        JScrollBar vBar = scrollPane.getVerticalScrollBar();
+        vBar.setUI(new javax.swing.plaf.basic.BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = mid;
+                this.trackColor = new Color(230, 230, 230);
+            }
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createRetroArrowButton();
+            }
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createRetroArrowButton();
+            }
+            private JButton createRetroArrowButton() {
+                JButton btn = new JButton();
+                btn.setPreferredSize(new Dimension(16, 16));
+                btn.setBackground(mid);
+                btn.setBorder(BorderFactory.createBevelBorder(
+                        BevelBorder.RAISED,
+                        light, light,
+                        dark, dark
+                ));
+                return btn;
+            }
+            @Override
+            protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setColor(mid);
+                g2.fillRect(r.x, r.y, r.width, r.height);
+
+                g2.setColor(light); // highlight
+                g2.drawLine(r.x, r.y, r.x + r.width, r.y);
+
+                g2.setColor(dark); // shadow
+                g2.drawLine(r.x, r.y + r.height - 1, r.x + r.width, r.y + r.height - 1);
+            }
+            @Override
+            protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
+                g.setColor(new Color(240, 240, 240));
+                g.fillRect(r.x, r.y, r.width, r.height);
+            }
+        });
+        vBar.setPreferredSize(new Dimension(18, 18));
+    }
+    // --- Apply exact retro button sizes ---
+    private void applyFixedButtonSizes() {
+        Dimension catSize = new Dimension(54, 54);   // Top/Bottom/Footwear
+        Dimension actionSize = new Dimension(130, 40); // Add/Remove buttons
+
+        // Category buttons
+        setButtonSize(topButton, catSize);
+        setButtonSize(bottomButton, catSize);
+        setButtonSize(footwearButton, catSize);
+
+        // Action buttons
+        setButtonSize(addButton, actionSize);
+        setButtonSize(removeButton, actionSize);
+    }
+
+    // Helper
+    private void setButtonSize(JButton btn, Dimension size) {
+        if (btn == null) return;
+        btn.setPreferredSize(size);
+        btn.setMinimumSize(size);
+        btn.setMaximumSize(size);
+    }
+
 
 }
