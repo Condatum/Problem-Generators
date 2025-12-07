@@ -47,7 +47,7 @@ public class Collection extends JFrame {
         // --- Initialize font first ---
         try {
             InputStream is = getClass().getResourceAsStream("/PixelifySans-Regular.ttf");
-            PixelSans = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(14f);
+            PixelSans = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(14f);
         } catch (FontFormatException | IOException e) {
             System.out.println("Font not found...");
             PixelSans = TitleText != null ? TitleText.getFont() : new Font("Arial", Font.PLAIN, 14);
@@ -66,11 +66,11 @@ public class Collection extends JFrame {
 
         // --- Button listeners ---
         if (addButton != null) {
-            addButton.addActionListener(_ -> AddClothing(selectImageFromFileExplorer()));
+            addButton.addActionListener(e -> AddClothing(selectImageFromFileExplorer()));
         }
 
         if (removeButton != null) {
-            removeButton.addActionListener(_ -> RemoveClothing());
+            removeButton.addActionListener(e -> RemoveClothing());
         }
 
         /*
