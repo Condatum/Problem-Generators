@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -23,7 +24,6 @@ public class Collection extends JFrame {
     private JLabel selectedClotheLabel = null;
     private final Color originalBorderColor = new Color(150, 150, 150);
     private final Color selectionBorderColor = Color.RED;
-    ArrayList<ImageIcon> clothes = new ArrayList<>();
     JPanel galleryPanel;
     private JPanel wardrobePanel;
     private JPanel titlePanel;
@@ -43,43 +43,46 @@ public class Collection extends JFrame {
     private JPanel Categories;
     private Category selectedCategory = Category.TOP;
     private Font PixelSans;
+    private File storageFolder;
     public Collection() {
         // --- Initialize font first ---
         try {
             InputStream is = getClass().getResourceAsStream("/PixelifySans-Regular.ttf");
-            PixelSans = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(14f);
+            PixelSans = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(14f);
         } catch (FontFormatException | IOException e) {
             System.out.println("Font not found...");
             PixelSans = TitleText != null ? TitleText.getFont() : new Font("Arial", Font.PLAIN, 14);
         }
-
         // --- Set font safely ---
         setAllFonts();
-
         // --- Initialize data and gallery panel ---
         clothesData = new ArrayList<>();
         galleryPanel = new JPanel(new WrapLayout(FlowLayout.LEFT, 20, 20));
-
         // --- Run your existing setup methods ---
+        storageFolder = new File(System.getProperty("user.dir") + "/liveImages/");
+        storageFolder.mkdirs();
         InitializeScrollableContainer();
         InitializePanelDesign();
-
         // --- Button listeners ---
-        if (addButton != null) {
-            addButton.addActionListener(e -> AddClothing(selectImageFromFileExplorer()));
-        }
-
+        addButton.addActionListener(e -> {
+            File selected = selectImageFromFileExplorer();
+            if (selected != null) {
+                AddClothing(selected, new ImageIcon(selected.getAbsolutePath()));
+            }
+        });
         if (removeButton != null) {
             removeButton.addActionListener(e -> RemoveClothing());
         }
-
         /*
         Initializing the categories panel to hold all buttons...
          */
         categoriesDesignInit();
-
         // Make sure window is visible
         setVisible(true);
+        // Initialize Storage folder
+//        storageFolder = new File("liveImages/");
+//        storageFolder.mkdirs();// create if missing
+
     }
     private void categoriesDesignInit(){
         Categories.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
@@ -99,17 +102,17 @@ public class Collection extends JFrame {
         topButton.setIcon(new ImageIcon(scaled));
         bottomButton.setIcon(new ImageIcon(scaled2));
         footwearButton.setIcon(new ImageIcon(scaled3));
-        applyFixedButtonSizes();  // Change button size in this method
+        applyFixedButtonSizes();  // Change button size in this method // Specifically just for the buttons under categories panel
     }
 
     private void applyPanelRecessBorder(JPanel panel, Color color) {
-        if (panel == null) return; // ADDED NULL CHECK
+        if (panel == null) return;
         final int BORDER_WEIGHT = 3;
         Border bevelBorder = BorderFactory.createBevelBorder(
                 BevelBorder.LOWERED,
-                Color.WHITE,        // Highlight Outer (Top/Left) - White still looks good here
+                Color.WHITE,        // Highlight Outer (Top/Left)
                 Color.WHITE,        // Highlight Inner (Top/Left)
-                Color.BLACK,        // Shadow Outer (Bottom/Right) - Black still looks good here
+                Color.BLACK,        // Shadow Outer (Bottom/Right)
                 Color.BLACK         // Shadow Inner (Bottom/Right)
         );
         Border weightBorder = new EmptyBorder(
@@ -121,7 +124,6 @@ public class Collection extends JFrame {
                         bevelBorder
                 )
         );
-        // Optional: Set the retro background color
         panel.setBackground(color);
     }
 
@@ -167,24 +169,17 @@ public class Collection extends JFrame {
         Image scaled = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
     }
-
-
-    // should be replaced with ClothingClass when we done
     private void adderToPanel(ClothingItem item) {
         if (item == null || item.getClothesImage() == null) return; // ADDED NULL CHECK
-
         ImageIcon resized = resize(item.getClothesImage(), 180, 180);
         if (resized == null) return;
-
         // 1. Create the JLabel
         JLabel label = new JLabel(resized);
         label.putClientProperty("ClothingItem", item);        // --- END ATTACHMENT ---
-
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setBorder(BorderFactory.createLineBorder(originalBorderColor));
         label.setOpaque(true);
         label.setBackground(Color.WHITE);
-
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -206,18 +201,7 @@ public class Collection extends JFrame {
     }
 
     private void InitializeScrollableContainer(){
-        try {
-            clothesData.add(new ClothingItem("/clothing-images/input.jpg", new ImageIcon(Objects.requireNonNull(getClass().getResource("/clothing-images/shirt_1.jpg"))), Category.TOP));
-            clothesData.add(new ClothingItem("/clothing-images/shirt_1.jpg", new ImageIcon(Objects.requireNonNull(getClass().getResource("/clothing-images/shirt_1.jpg"))), Category.TOP));
-            clothesData.add(new ClothingItem("/clothing-images/pants_1.jpg", new ImageIcon(Objects.requireNonNull(getClass().getResource("/clothing-images/pants_1.jpg"))), Category.BOTTOM));
-            clothesData.add(new ClothingItem("/clothing-images/shoes_1.jpg", new ImageIcon(Objects.requireNonNull(getClass().getResource("/clothing-images/shoes_1.jpg"))), Category.FOOTWEAR));
-
-            for (int i = 0; i < 10; i++) {
-                clothesData.add(new ClothingItem("/clothing-images/shirt_1.jpg", new ImageIcon(Objects.requireNonNull(getClass().getResource("/clothing-images/shirt_1.jpg"))), Category.TOP));
-            }
-        } catch (Exception e) {
-            System.out.println("Error loading sample images: " + e.getMessage());
-        }
+        preloadExistingImages();
 
         if (collectionPanel == null) {
             System.out.println("Error: collectionPanel is null!");
@@ -232,9 +216,6 @@ public class Collection extends JFrame {
         galleryPanel.setBackground(Color.WHITE);
 
         // Fill galleryPanel with resized JLabels
-        for (ClothingItem item : clothesData) {
-            adderToPanel(item); // Pass the ClothingItem object
-        }
 
         // Put the galleryPanel inside a JScrollPane
         JScrollPane scrollPane = new JScrollPane(galleryPanel,
@@ -253,13 +234,11 @@ public class Collection extends JFrame {
         // ---- // SETTING UP THE COLLECTION PANEL TO BE SCROLLABLE AND ADDING SAMPLE IMAGES // ---- //
         // --------------------------------------------------------------------------------------------//
     }
-
     private void InitializePanelDesign(){
         if (contentPanel == null || collectionPanel == null) {
             System.out.println("Error: Panels are null. Check your form initialization.");
             return;
         }
-
         Color gray = new Color(198, 198, 198);// border effect for panels
         Color white = new Color(255,255,255);// border effect for panels
         applyPanelRecessBorder(contentPanel, gray);
@@ -323,23 +302,22 @@ public class Collection extends JFrame {
             }
         });
     }
-    private ImageIcon selectImageFromFileExplorer() {
+    private File selectImageFromFileExplorer() {
         JFileChooser fileChooser = new JFileChooser();
-
-        // Sets file filter for images only
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
                 "Image files", "jpg", "jpeg", "png", "gif", "bmp"));
-
-        // Sets starting directory
-//        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-
         int result = fileChooser.showOpenDialog(this);
-
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
+                String taggedName = appendCategoryTag(selectedFile.getName());/* Basically append the category in the file name*/
+                File destination = new File(storageFolder, taggedName);
             try {
-                // Create ImageIcon from selected file
-                return new ImageIcon(selectedFile.getAbsolutePath());
+                java.nio.file.Files.copy(
+                        selectedFile.toPath(), // The file
+                        destination.toPath(), // Destination
+                        StandardCopyOption.REPLACE_EXISTING // Replace the existing file attribute
+                );
+                return destination; // Return as an icon for da gui
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this,
                         "Error loading image: " + e.getMessage(),
@@ -350,31 +328,28 @@ public class Collection extends JFrame {
         return null;
     }
     // method name changed to AddClothing and RemoveClothing
-    void AddClothing(ImageIcon img) {
+    void AddClothing(File sourceFile, ImageIcon img) {
         //Replaced conditional statements for a more dynamic system.
-        Category categoryDecider = selectedCategory;
+        Category categoryDecider = categoryIdentifierViaFileName(sourceFile);
         if (img == null) {
             System.out.println("Cannot add null image");
             return;
         }
-
-
-        ClothingItem newItem = new ClothingItem("/clothing-images/shirt_1.jpg", img, categoryDecider);
+        ClothingItem newItem = new ClothingItem(
+                sourceFile.getAbsolutePath(),   // real path
+                img,                             // real loaded icon
+                categoryDecider
+        );
         clothesData.add(newItem);
         adderToPanel(newItem);
-
-
         galleryPanel.revalidate();
         galleryPanel.repaint();
     }
-
-
     void RemoveClothing() {
         if (selectedClotheLabel == null) {
             JOptionPane.showMessageDialog(this, "Please select a clothing item to remove.", "No Item Selected", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         ClothingItem itemToRemove = (ClothingItem)selectedClotheLabel.getClientProperty("ClothingItem");
         if (itemToRemove != null) {
             // 1. Remove the item from the DATA list (Model)
@@ -404,7 +379,8 @@ public class Collection extends JFrame {
         galleryPanel.revalidate();
         galleryPanel.repaint();
     }
-    /*
+
+    /**
     Sets the design for the ScrollBar
      */
     private void applyRetroScrollBarStyle(JScrollPane scrollPane) {
@@ -479,6 +455,77 @@ public class Collection extends JFrame {
         btn.setMinimumSize(size);
         btn.setMaximumSize(size);
     }
+    private String appendCategoryTag(String filename) {
+        int dotIndex = filename.lastIndexOf(".");
+        String baseName;
+        String extension;
+        if (dotIndex == -1) {
+            baseName = filename;
+            extension = "";
+        } else {
+            baseName = filename.substring(0, dotIndex);
+            extension = filename.substring(dotIndex); // includes the dot
+        }
+        return baseName + "#" + selectedCategory.name() + extension;
+    }
 
+    /**
+     * Basically an enum identifier via file name
+     * @param e - Enter a file
+     * @return - Returns which category of enum "Category.class" it is
+     */
+    private Category categoryIdentifierViaFileName(File e){
+        String name = e.getName();
+        int hashIndex = name.lastIndexOf('#');
+        int dotIndex  = name.lastIndexOf('.');
+        if (hashIndex == -1) {
+            return null;
+        }
+        if (dotIndex == -1 || dotIndex < hashIndex) {
+            dotIndex = name.length();
+        }
+        String categoryText = name.substring(hashIndex + 1, dotIndex);
+        try {
+            return Category.valueOf(categoryText); // Determines which enum is that file name
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
+    }
+    private void preloadExistingImages() {
+        if (storageFolder == null || !storageFolder.exists()) {
+            System.out.println("Storage folder not found: " + storageFolder);
+            return;
+        }
+        File[] files = storageFolder.listFiles();
+        if (files == null || files.length == 0) {
+            System.out.println("No existing files found in: " + storageFolder);
+            return;
+        }
+        for (File file : files) {
+            if (!file.isFile()) continue; // Skip subfolders
+            try {
+                Category category = categoryIdentifierViaFileName(file);
+                if (category == null) {
+                    System.out.println("Skipping file without category tag: " + file.getName());
+                    continue;
+                }
+
+                ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+                ClothingItem item = new ClothingItem(
+                        file.getAbsolutePath(),
+                        icon,
+                        category
+                );
+
+                clothesData.add(item);
+                adderToPanel(item); // display in gallery
+            } catch (Exception e) {
+                System.out.println("Failed to load image: " + file.getName() + " -> " + e.getMessage());
+            }
+        }
+        // Refresh gallery panel
+        galleryPanel.revalidate();
+        galleryPanel.repaint();
+    }
 
 }

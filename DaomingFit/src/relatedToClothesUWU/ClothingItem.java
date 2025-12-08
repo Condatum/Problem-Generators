@@ -16,11 +16,9 @@ public class ClothingItem {
     public String getImagePath() {
         return imagePath;
     }
-
     public Category getCategory() {
         return category;
     }
-
     public ImageIcon getClothesImage() {
         return clothesImage;
     }

@@ -7,7 +7,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Objects;
 
 public class Wardrobe extends JFrame {
     private JPanel wardrobePanel;
@@ -23,8 +22,8 @@ public class Wardrobe extends JFrame {
     // temporary way of loading shirt. change it once other classes are connected to the gui
     // when adding shirt images, size must be 250 x 250
     private String[] shirts = {
-            "/clothing-images/shirt_1.jpg",
-            "/clothing-images/shirt_2.jpg"
+            "/liveImages/clothing-images/shirt_1.jpg",
+            "/liveImages/clothing-images/shirt_2.jpg"
     };
 
     public Wardrobe(){
