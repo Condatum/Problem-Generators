@@ -350,24 +350,42 @@ public class Collection extends JFrame {
             JOptionPane.showMessageDialog(this, "Please select a clothing item to remove.", "No Item Selected", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        ClothingItem itemToRemove = (ClothingItem)selectedClotheLabel.getClientProperty("ClothingItem");
-        if (itemToRemove != null) {
-            // 1. Remove the item from the DATA list (Model)
-            clothesData.remove(itemToRemove);
 
-            // 2. Remove the JLabel from the VIEW (galleryPanel)
-            galleryPanel.remove(selectedClotheLabel);
+        ClothingItem itemToRemove =
+                (ClothingItem) selectedClotheLabel.getClientProperty("ClothingItem");
 
-            // 3. Clear the selection reference
-            selectedClotheLabel = null;
-
-            // 4. Force the UI to update
-            galleryPanel.revalidate();
-            galleryPanel.repaint();
-        } else {
-            System.out.println("Error: Could not retrieve ClothingItem data from selected label.");
+        if (itemToRemove == null) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error: Could not retrieve item data.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
         }
+        //delete file from disk
+        File fileToDelete = new File(itemToRemove.getImagePath());
+        if(fileToDelete.exists()){
+            boolean deleted = fileToDelete.delete();
+            if(!deleted){
+                JOptionPane.showMessageDialog(this, "Failed to delete image file from disk.", "File Error",JOptionPane.ERROR_MESSAGE);
+            return;
+            }
+        }
+
+        //remove item from arraylist
+        clothesData.remove(itemToRemove);
+        //remove item from ui
+        galleryPanel.remove(selectedClotheLabel);
+        //clears selection
+        selectedClotheLabel = null;
+
+        galleryPanel.revalidate();
+        galleryPanel.repaint();
     }
+
+
+
 
     private void categoryFilter (Category category){
         galleryPanel.removeAll();

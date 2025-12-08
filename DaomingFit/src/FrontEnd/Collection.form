@@ -116,16 +116,16 @@
                   <text value=""/>
                 </properties>
               </component>
-              <component id="8b48a" class="javax.swing.JButton" binding="removeButton" default-binding="true">
-                <constraints/>
-                <properties>
-                  <text value="Remove"/>
-                </properties>
-              </component>
               <component id="9da74" class="javax.swing.JButton" binding="addButton" default-binding="true">
                 <constraints/>
                 <properties>
-                  <text value="Add"/>
+                  <text value="Add Clothes"/>
+                </properties>
+              </component>
+              <component id="8b48a" class="javax.swing.JButton" binding="removeButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Remove Clothes"/>
                 </properties>
               </component>
             </children>
