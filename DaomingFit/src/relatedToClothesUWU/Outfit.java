@@ -1,5 +1,7 @@
 package relatedToClothesUWU;
 
+import Classes.ClothingItem;
+
 public class Outfit {
     private ClothingItem top;
     private ClothingItem bottom;

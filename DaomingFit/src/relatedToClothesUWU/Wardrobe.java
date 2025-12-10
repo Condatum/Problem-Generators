@@ -1,5 +1,8 @@
 package relatedToClothesUWU;
 
+import Classes.Category;
+import Classes.ClothingItem;
+
 import java.util.*;
 public class Wardrobe {
     private ArrayList<ClothingItem> clothes;

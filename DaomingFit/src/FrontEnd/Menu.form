@@ -30,10 +30,10 @@
             <properties>
               <background color="-4144960"/>
               <font name="DialogInput" size="12" style="1"/>
-              <icon value="x.png"/>
+              <icon value="x2.png"/>
               <preferredSize width="18" height="16"/>
               <selected value="false"/>
-              <text value="X"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="58c5e" class="javax.swing.JLabel">
@@ -45,7 +45,7 @@
               <background color="-1"/>
               <font name="DialogInput" size="12"/>
               <foreground color="-1"/>
-              <text value="DaoMing Fit - relatedToClothesUWU.Outfit Maker"/>
+              <text value="DaoMing Fit - Outfit Maker"/>
             </properties>
           </component>
           <component id="13b44" class="javax.swing.JLabel" binding="icon">

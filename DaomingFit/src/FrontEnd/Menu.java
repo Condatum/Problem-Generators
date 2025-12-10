@@ -1,12 +1,12 @@
 package FrontEnd;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Color; // Needed for Color.WHITE and Color.BLACK
-import javax.swing.border.Border; // Needed for Border type
-import javax.swing.border.EmptyBorder; // Needed for explicit border weight
-import javax.swing.border.BevelBorder; // Needed for the 3D effect
 
 public class Menu extends JFrame {
     private JPanel menuPanel;
@@ -18,24 +18,23 @@ public class Menu extends JFrame {
     private JLabel logoIcon;
     private JButton exitButton;
 
-    public Menu(){
-        // applying custom borders for selected buttons
-        applyRetroBorder(startButton);
-        applyRetroBorder(exitButton);
+    public Menu() {
+        // custom retro styling for the buttons
+        applyRetroStyle(startButton);
+        applyRetroStyle(exitButton);
+        applyRetroStyle(xButton);
 
-        // command to close the program
         MouseAdapter exitAction = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // This single line executes when either button is clicked
                 System.exit(0);
             }
         };
-
-        // exit buttons
+        // Add listener to both X button and Exit button
         xButton.addMouseListener(exitAction);
         exitButton.addMouseListener(exitAction);
 
+        // To switch tabs
         startButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -49,57 +48,47 @@ public class Menu extends JFrame {
             }
         });
 
+        // --- 4. Window Setup ---
+        if (menuPanel != null) {
+            add(menuPanel);
+        } else {
+            System.out.println("Warning: menuPanel is null. Check GUI Designer.");
+        }
 
-        // do not edit
-        add(menuPanel);
         setUndecorated(true);
         pack();
         setLocationRelativeTo(null);
+
+        RetroFactory.applyGlobalFont(this);
         setVisible(true);
     }
 
-    private void applyRetroBorder(JButton button) {
-        final int BORDER_WEIGHT = 3;
+    /**
+     * Helper to apply the Windows 95/Retro style to existing buttons.
+     */
+    private void applyRetroStyle(JButton button) {
+        if (button == null) return;
 
-        // 1. Create the Bevel Border (The 3D Color Effect)
+        // Set the retro gray background
+        button.setBackground(new Color(198, 198, 198));
+        button.setFocusPainted(false); // Removes the focus square
+
+        // Create the 3D Bevel Border
+        final int BORDER_WEIGHT = 3;
         Border bevelBorder = BorderFactory.createBevelBorder(
                 BevelBorder.RAISED,
-                Color.WHITE,        // Highlight Outer (Top/Left)
-                Color.WHITE,        // Highlight Inner (Top/Left)
-                Color.BLACK,        // Shadow Outer (Bottom/Right)
-                Color.BLACK         // Shadow Inner (Bottom/Right)
+                Color.WHITE, Color.WHITE,
+                Color.BLACK, Color.BLACK
         );
-
-        // 2. Create the Empty Border (The Weight/Padding)
         Border weightBorder = new EmptyBorder(
                 BORDER_WEIGHT, BORDER_WEIGHT, BORDER_WEIGHT, BORDER_WEIGHT
         );
 
-        // 3. Combine them and apply
-        button.setBorder(
-                BorderFactory.createCompoundBorder(
-                        weightBorder,
-                        bevelBorder
-                )
-        );
+        button.setBorder(BorderFactory.createCompoundBorder(weightBorder, bevelBorder));
     }
 
-
     public static void main(String[] args) {
-        final int BORDER_WEIGHT = 3;
-        Border customBorder = BorderFactory.createCompoundBorder(
-                new EmptyBorder(BORDER_WEIGHT, BORDER_WEIGHT, BORDER_WEIGHT, BORDER_WEIGHT),
-                BorderFactory.createBevelBorder(
-                        BevelBorder.RAISED,
-                        Color.WHITE, Color.WHITE,
-                        Color.BLACK, Color.BLACK
-                )
-        );
-
-        // Override the default border property for ALL JButtons
-        UIManager.put("Button.border", customBorder);
-
-        // Then launch your GUI
+        // Launch the Menu
         SwingUtilities.invokeLater(() -> new Menu());
     }
 }
