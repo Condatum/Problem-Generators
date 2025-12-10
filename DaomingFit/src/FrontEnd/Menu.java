@@ -14,15 +14,18 @@ public class Menu extends JFrame {
     private JButton xButton;
     private JPanel contentPanel;
     private JLabel icon;
-    private JButton startButton;
-    private JLabel logoIcon;
+    private JButton wardrobeButton;
     private JButton exitButton;
+    private JButton collectionsButton;
+    private JLabel test;
+    private JLabel daomingTitle;
 
     public Menu() {
         // custom retro styling for the buttons
-        applyRetroStyle(startButton);
+        applyRetroStyle(wardrobeButton);
         applyRetroStyle(exitButton);
         applyRetroStyle(xButton);
+        applyRetroStyle(collectionsButton);
 
         MouseAdapter exitAction = new MouseAdapter() {
             @Override
@@ -35,14 +38,25 @@ public class Menu extends JFrame {
         exitButton.addMouseListener(exitAction);
 
         // To switch tabs
-        startButton.addMouseListener(new MouseAdapter() {
+        wardrobeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // redirect to wardrobe panel
                 Wardrobe nextWindow = new Wardrobe();
                 nextWindow.setVisible(true);
-                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(startButton);
+                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(wardrobeButton);
 
+                // close menu panel
+                currentFrame.dispose();
+            }
+        });
+        collectionsButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // redirect to wardrobe panel
+                Collection nextWindow = new Collection();
+                nextWindow.setVisible(true);
+                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(collectionsButton);
                 // close menu panel
                 currentFrame.dispose();
             }
@@ -60,6 +74,7 @@ public class Menu extends JFrame {
         setLocationRelativeTo(null);
 
         RetroFactory.applyGlobalFont(this);
+        daomingTitle.setFont(RetroFactory.getPixelFont(40));
         setVisible(true);
     }
 

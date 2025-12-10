@@ -63,39 +63,50 @@
       <grid id="51d82" binding="contentPanel" layout-manager="GridBagLayout">
         <constraints/>
         <properties>
-          <background color="-4144960"/>
-          <preferredSize width="900" height="500"/>
+          <autoscrolls value="true"/>
+          <background color="-7618373"/>
+          <preferredSize width="950" height="500"/>
         </properties>
         <border type="none"/>
         <children>
-          <component id="37415" class="javax.swing.JLabel" binding="logoIcon">
+          <component id="3ceb6" class="javax.swing.JLabel" binding="test">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="30" bottom="20" right="0" weightx="0.0" weighty="0.0"/>
+              <grid row="1" column="0" row-span="4" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="100" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <icon value="logo.png"/>
-              <maximumSize width="400" height="400"/>
-              <preferredSize width="170" height="200"/>
+              <icon value="catowl1_290x290.png"/>
               <text value=""/>
             </properties>
           </component>
-          <component id="5d274" class="javax.swing.JButton" binding="startButton">
+          <component id="5d274" class="javax.swing.JButton" binding="wardrobeButton">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="0" bottom="15" right="0" weightx="0.0" weighty="0.0"/>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="10" right="0" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
               <background color="-4144960"/>
               <font name="DialogInput" size="20"/>
               <preferredSize width="180" height="40"/>
-              <text value="Start"/>
+              <text value="Wardrobe"/>
+            </properties>
+          </component>
+          <component id="fab0a" class="javax.swing.JButton" binding="collectionsButton">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="10" right="0" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <background color="-4144960"/>
+              <font name="DialogInput" size="20"/>
+              <preferredSize width="180" height="40"/>
+              <text value="Collections"/>
             </properties>
           </component>
           <component id="105d6" class="javax.swing.JButton" binding="exitButton">
             <constraints>
-              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="0" bottom="50" right="0" weightx="0.0" weighty="0.0"/>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
               <actionCommand value="Exit"/>
@@ -105,16 +116,16 @@
               <text value="Exit"/>
             </properties>
           </component>
-          <component id="116fe" class="javax.swing.JLabel">
+          <component id="116fe" class="javax.swing.JLabel" binding="daomingTitle">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="30" right="0" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
               <font name="DialogInput" size="35" style="1"/>
               <horizontalAlignment value="0"/>
               <minimumSize width="80" height="40"/>
-              <preferredSize width="260" height="40"/>
+              <preferredSize width="350" height="40"/>
               <text value="DaoMing Fit"/>
             </properties>
           </component>
