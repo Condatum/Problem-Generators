@@ -1,8 +1,6 @@
 package FrontEnd;
 
-import Classes.Category;
-import Classes.ClothingItem;
-import Classes.ClothingManager;
+import Classes.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +15,7 @@ public class Collection extends JFrame {
     private JPanel titlePanel;
     private JButton xButton;
     private JLabel icon;
+    private final ImageIcon eraserIcon = new ImageIcon(getClass().getResource("/eraser.png"));
     private JPanel collectionPanel;
     private JPanel tabsPanel;
     private JLabel wardrobeLabel;
@@ -37,10 +36,12 @@ public class Collection extends JFrame {
     private JLabel selectedClotheLabel = null; // Tracks what user clicked
     private Category currentCategory = Category.TOP;
     private File storageFolder;
+    private boolean _removeBg = true; // Moved inside class so it can be accessed globally
 
     // Colors for selection
     private final Color selectionColor = Color.RED;
     private final Color normalColor = new Color(150, 150, 150);
+
 
     public Collection() {
         // 1. Setup Data Folder
@@ -145,20 +146,72 @@ public class Collection extends JFrame {
     }
 
     private void setupListeners() {
-        // --- Navigation Buttons ---
         topButton.addActionListener(e -> refreshGallery(Category.TOP));
         bottomButton.addActionListener(e -> refreshGallery(Category.BOTTOM));
         shoesButton.addActionListener(e -> refreshGallery(Category.FOOTWEAR));
 
-        // --- Action Buttons ---
         addClothesButton.addActionListener(e -> {
-            File file = selectImageModern();
-            if (file != null) {
-                addClothingLogic(file);
+            File originalFile = selectImageModern();
+            if (originalFile == null) return; // User cancelled
+
+            boolean proceedWithRemoval = false;
+
+            if (_removeBg) {
+                Object[] options = {"Yes", "No", "Yes always", "No always"};
+                int response = JOptionPane.showOptionDialog(
+                        null,
+                        "Remove background of the provided image?",
+                        "RMBG",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        eraserIcon,
+                        options,
+                        options[0]
+                );
+
+                switch(response){
+                    case 0: // Yes
+                        proceedWithRemoval = true;
+                        break;
+                    case 1: // No
+                        proceedWithRemoval = false;
+                        break;
+                    case 2: // Yes always
+                        _removeBg = true;
+                        proceedWithRemoval = true;
+                        break;
+                    case 3: // No always
+                        _removeBg = false;
+                        proceedWithRemoval = false;
+                        break;
+                    default:
+                        return; // User clicked X
+                }
+            }
+            /**
+             * Added threading for the "processing" toast pop up
+             */
+            if (proceedWithRemoval) {
+                Toast tost = new Toast("Removing Background... Please Wait.");
+                tost.showToast();
+                new Thread(() -> {
+                    File processedFile = RemoveBGAPI.removeBackground(originalFile);
+                    SwingUtilities.invokeLater(() -> {
+                        tost.hideToast(); // Remove notification
+                        if (processedFile != null) {
+                            addClothingLogic(processedFile);
+                            JOptionPane.showMessageDialog(null, "Background Removed Successfully!");
+                        } else {
+                            addClothingLogic(originalFile);
+                            JOptionPane.showMessageDialog(null, "Failed to remove background. Using original image.");
+                        }
+                    });
+                }).start();
+
+            } else {
+                addClothingLogic(originalFile);
             }
         });
-
-        // Switching Tabs
         wardrobeLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -167,7 +220,6 @@ public class Collection extends JFrame {
                 nextWindow.setVisible(true);
                 JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(collectionLabel);
 
-                // close wardrobe panel
                 currentFrame.dispose();
             }
         });
@@ -276,7 +328,9 @@ public class Collection extends JFrame {
 
             // Refresh UI
             refreshGallery(currentCategory);
-            JOptionPane.showMessageDialog(this, "Item added successfully!");
+            // NOTE: Toast handles success message if threading is used, but this is a fallback for direct adds
+            // You can choose to keep or remove the popup below based on preference
+            // JOptionPane.showMessageDialog(this, "Item added successfully!");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error adding image: " + e.getMessage());
@@ -284,22 +338,26 @@ public class Collection extends JFrame {
     }
 
     private void removeClothingLogic() {
+    try{
+
         if (selectedClotheLabel == null) {
             JOptionPane.showMessageDialog(this, "Please select an item to remove.");
             return;
         }
-
         ClothingItem item = (ClothingItem) selectedClotheLabel.getClientProperty("item");
         File file = new File(item.getImagePath());
-
         if (file.exists() && file.delete()) {
-            // Notify Manager
             ClothingManager.getInstance().loadFromDisk();
             refreshGallery(currentCategory);
             JOptionPane.showMessageDialog(this, "Item removed.");
         } else {
             JOptionPane.showMessageDialog(this, "Could not delete file from disk.");
         }
+    }catch(Exception e){
+        JOptionPane.showMessageDialog(this,
+                "An unexpected error occurred while deleting:\n" + e.getMessage(),
+                "Critical Error", JOptionPane.ERROR_MESSAGE);
+    }
     }
 
     public static void main(String[] args) {
