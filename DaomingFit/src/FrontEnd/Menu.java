@@ -17,8 +17,9 @@ public class Menu extends JFrame {
     private JButton wardrobeButton;
     private JButton exitButton;
     private JButton collectionsButton;
-    private JLabel test;
+    private JLabel iconLabel;
     private JLabel daomingTitle;
+    private JLabel descLabel;
 
     public Menu() {
         applyRetroStyle(wardrobeButton);
@@ -73,7 +74,14 @@ public class Menu extends JFrame {
         setLocationRelativeTo(null);
 
         RetroFactory.applyGlobalFont(this);
-        daomingTitle.setFont(RetroFactory.getPixelFont(40));
+
+        // Setting font sizes
+        daomingTitle.setFont(RetroFactory.getPixelFont(35F));
+        descLabel.setFont(RetroFactory.getPixelFont(18F));
+        wardrobeButton.setFont(RetroFactory.getPixelFont(20F));
+        collectionsButton.setFont(RetroFactory.getPixelFont(20F));
+        exitButton.setFont(RetroFactory.getPixelFont(20F));
+
         setVisible(true);
     }
 
