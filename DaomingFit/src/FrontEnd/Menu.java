@@ -21,7 +21,6 @@ public class Menu extends JFrame {
     private JLabel daomingTitle;
 
     public Menu() {
-        // custom retro styling for the buttons
         applyRetroStyle(wardrobeButton);
         applyRetroStyle(exitButton);
         applyRetroStyle(xButton);
@@ -78,13 +77,9 @@ public class Menu extends JFrame {
         setVisible(true);
     }
 
-    /**
-     * Helper to apply the Windows 95/Retro style to existing buttons.
-     */
     private void applyRetroStyle(JButton button) {
         if (button == null) return;
 
-        // Set the retro gray background
         button.setBackground(new Color(198, 198, 198));
         button.setFocusPainted(false); // Removes the focus square
 

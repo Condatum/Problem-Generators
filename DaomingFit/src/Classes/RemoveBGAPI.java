@@ -106,12 +106,10 @@ public class RemoveBGAPI {
                 return null;
             }
 
-            // Create a temporary file to store the result
-            // This creates a file like "processed_12345.png" in your system's temp folder
+            // Creating a temporary file to store the result
             Path tempFile = Files.createTempFile("processed_", ".png");
             Files.write(tempFile, response.body());
 
-            // Return the File object pointing to this temp file
             return tempFile.toFile();
 
         } catch (IOException | InterruptedException e) {

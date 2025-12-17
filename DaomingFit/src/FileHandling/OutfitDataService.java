@@ -1,13 +1,16 @@
-package FileHandling; // Make sure this matches the folder name in your src!
+package FileHandling;
 
 import Classes.Outfit;
 
+import javax.swing.*;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class OutfitDataService {
     // Uses user.dir to find the root of the project safely
@@ -17,10 +20,8 @@ public class OutfitDataService {
     private static final String DELIMITER = ",";
 
     public void saveOutfit(Outfit outfit) {
-        // Validation: Don't save if any data is missing
         if (outfit == null) return;
 
-        // 1. Ensure the directory exists before writing
         ensureDirectoryExists();
 
         String line = outfit.getOutfitName() + DELIMITER +
@@ -60,19 +61,58 @@ public class OutfitDataService {
             System.out.println("Outfits loading unsuccessful: " + e.getMessage());
         }
 
+        checkAndCleanMissingItems(outfits);
+
         return outfits;
     }
 
+    private void checkAndCleanMissingItems(ArrayList<Outfit> fits) {
+        Iterator<Outfit> iterator = fits.iterator();
+        boolean updateFile = false;
+
+        while (iterator.hasNext()) {
+            Outfit o = iterator.next();
+
+            // Use Paths.get() to handle the absolute C:\ paths shown in your screenshot
+            boolean missingTop = !Files.exists(Paths.get(o.getShirt()));
+            boolean missingBottom = !Files.exists(Paths.get(o.getBottom()));
+            boolean missingShoes = !Files.exists(Paths.get(o.getFootwear()));
+
+            if (missingTop || missingBottom || missingShoes) {
+                // Fixed the syntax for the message dialog
+                JOptionPane.showMessageDialog(null,
+                        "The outfit '" + o.getOutfitName() + "' contains a deleted clothing item.\n" +
+                                "It will be removed from your saved outfits.",
+                        "System Update",
+                        JOptionPane.WARNING_MESSAGE);
+
+                iterator.remove(); // Removes it from the list
+                updateFile = true; // Flags that the file needs a single rewrite later
+            }
+        }
+
+        if (updateFile) {
+            try {
+                rewriteFile(fits);
+            } catch (IOException e) {
+                System.err.println("Error updating files: " + e.getMessage());
+            }
+        }
+    }
+
     public void removeOutfit(Outfit removeFit, ArrayList<Outfit> currentOutfits) throws IOException {
+        currentOutfits.removeIf(o -> o.getOutfitName().equals(removeFit.getOutfitName()));
+
+        rewriteFile(currentOutfits);
+
+        System.out.println("Outfit removal successful and file synchronized.");
+    }
+
+    private void rewriteFile(ArrayList<Outfit> validOutfits) throws IOException {
         ensureDirectoryExists();
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(TEMP_PATH))) {
-            for (Outfit o : currentOutfits) {
-                // Skip the outfit we want to remove
-                if (o.getOutfitName().equals(removeFit.getOutfitName())) {
-                    continue;
-                }
-
+            for (Outfit o : validOutfits) {
                 String line = o.getOutfitName() + DELIMITER +
                         o.getShirt() + DELIMITER +
                         o.getBottom() + DELIMITER +
@@ -84,11 +124,8 @@ public class OutfitDataService {
 
         Path origPath = Paths.get(FILE_PATH);
         Path tempPath = Paths.get(TEMP_PATH);
-
-        // Replace original with temp
         Files.copy(tempPath, origPath, StandardCopyOption.REPLACE_EXISTING);
         Files.delete(tempPath);
-        System.out.println("Outfit removal successful");
     }
 
     // Helper method to stop crashes if folder is missing

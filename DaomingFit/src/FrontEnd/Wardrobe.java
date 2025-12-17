@@ -85,7 +85,7 @@ public class Wardrobe extends JFrame {
         setVisible(true);
     }
 
-    // --- Core Logic: Linking to ClothingManager ---
+    // --- Linking to ClothingManager ---
 
     private void updateDisplayImages() {
         ClothingManager cm = ClothingManager.getInstance();
@@ -196,7 +196,7 @@ public class Wardrobe extends JFrame {
         Outfits.add(newFit);
         outfitNames.addElement(outfitName);
         inputOutfitField.setText("");
-        JOptionPane.showMessageDialog(this, outfitName + " Saved Successfully!");
+        JOptionPane.showMessageDialog(this, "\"" + outfitName + "\" Saved Successfully!");
     }
 
     private void loadOutfitAction() {

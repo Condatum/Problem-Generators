@@ -7,15 +7,11 @@ import java.awt.*;
 
 public class UI_Utilities {
 
-    /**
-     * Resizes an ImageIcon to the specified width and height.
-     * Essential for fitting your clothing images into the Wardrobe labels.
-     */
+    // For resizing the image
     public static ImageIcon resize(ImageIcon icon, int width, int height) {
         if (icon == null) return null;
 
         Image img = icon.getImage();
-        // SCALE_SMOOTH makes the image look good even when shrunk
         Image scaled = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 
         return new ImageIcon(scaled);

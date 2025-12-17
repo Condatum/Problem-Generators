@@ -19,8 +19,6 @@ public class Outfit {
     public String getBottom() { return bottom; }
     public String getFootwear() { return footwear; }
 
-    // Applied polymorphism by overriding toString()
-    // this will also display the name automatically
     @Override
     public String toString() {
         return outfitName;

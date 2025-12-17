@@ -230,9 +230,7 @@ public class Collection extends JFrame {
         xButton.addActionListener(e -> { System.exit(0);});
     }
 
-    /**
-     * Clears the gallery and loads items for the specific category.
-     */
+    // Clears the gallery and loads items for the specific category
     private void refreshGallery(Category category) {
         this.currentCategory = category;
 
@@ -271,7 +269,7 @@ public class Collection extends JFrame {
      */
     private JLabel createClothingLabel(ClothingItem item) {
         // Resize image to 150x150
-        ImageIcon icon = UI_Utilities.resize(item.getClothesImage(), 150, 150);
+        ImageIcon icon = UI_Utilities.resize(item.getClothesImage(), 200, 200);
 
         JLabel label = new JLabel(icon);
         label.putClientProperty("item", item); // Store data inside label
