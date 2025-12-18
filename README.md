@@ -1,4 +1,4 @@
-<img width="603" height="418" alt="Image" src="https://github.com/user-attachments/assets/f982cc59-7091-4204-bc4f-a787933e148a" />
+  <img width="603" height="418" alt="Image" src="https://github.com/user-attachments/assets/f982cc59-7091-4204-bc4f-a787933e148a" />
 
 ---
 
@@ -117,4 +117,4 @@ private static final String API_KEY = "YOUR_API_KEY_HERE";
 
 ---
 
-**© 2025 DaoMing Fit Development Team**
+**© 2025 ProblemGenerators**
